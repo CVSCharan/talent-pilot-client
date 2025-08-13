@@ -18,15 +18,16 @@ interface AuthState {
   error: string | null;
   login: (email: string, password: string) => Promise<void>;
   signup: (email: string, password: string) => Promise<void>;
-  googleLogin: (googleToken: string) => Promise<void>; // Assuming backend exchanges Google token for JWT
+  setTokenAndFetchUser: (token: string) => Promise<void>;
   logout: () => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
+  initializeAuth: () => Promise<void>;
 }
 
 const useAuthStore = create<AuthState>()(
   persist(
-    (set) => ({
+    (set, get) => ({ // Added 'get' here
       token: null,
       user: null,
       isAuthenticated: false,
@@ -36,11 +37,17 @@ const useAuthStore = create<AuthState>()(
       setLoading: (loading: boolean) => set({ isLoading: loading }),
       setError: (error: string | null) => set({ error }),
 
+      initializeAuth: async () => {
+        const currentToken = get().token;
+        if (currentToken) {
+          await get().setTokenAndFetchUser(currentToken);
+        }
+      },
+
       login: async (email, password) => {
         set({ isLoading: true, error: null });
         try {
-          // Replace with your actual backend login endpoint
-          const response = await fetch("http://localhost:9090/api/auth/login", {
+          const response = await fetch(`${import.meta.env.VITE_BASE_API_URL}/auth/login`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -69,15 +76,15 @@ const useAuthStore = create<AuthState>()(
             token: null,
             user: null,
           });
+          throw err;
         }
       },
 
       signup: async (email, password) => {
         set({ isLoading: true, error: null });
         try {
-          // Replace with your actual backend signup endpoint
           const response = await fetch(
-            "http://localhost:9090/api/auth/signup",
+            `${import.meta.env.VITE_BASE_API_URL}/auth/signup`,
             {
               method: "POST",
               headers: {
@@ -95,46 +102,6 @@ const useAuthStore = create<AuthState>()(
 
           set({
             token: data.token,
-            user: data.user, // Assuming your backend returns user data
-            isAuthenticated: true,
-            isLoading: false,
-          });
-          useUserProfileStore.getState().setUserProfile(data.user);
-        } catch (err) {
-          set({
-            error: (err as Error).message,
-            isLoading: false,
-            isAuthenticated: false,
-            token: null,
-            user: null,
-          });
-        }
-      },
-
-      googleLogin: async (googleToken) => {
-        set({ isLoading: true, error: null });
-        try {
-          // Replace with your actual backend Google login endpoint
-          // This endpoint should exchange the Google token (e.g., ID token) for your backend's JWT
-          const response = await fetch(
-            "http://localhost:9090/api/auth/google",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ token: googleToken }), // Send the Google token
-            }
-          );
-
-          const data = await response.json();
-
-          if (!response.ok) {
-            throw new Error(data.message || "Google login failed");
-          }
-
-          set({
-            token: data.token,
             user: data.user,
             isAuthenticated: true,
             isLoading: false,
@@ -148,10 +115,59 @@ const useAuthStore = create<AuthState>()(
             token: null,
             user: null,
           });
+          throw err;
         }
       },
 
-      logout: () => {
+      setTokenAndFetchUser: async (token: string) => {
+        set({ isLoading: true, error: null });
+        try {
+          set({ token, isAuthenticated: true });
+
+          const response = await fetch(`${import.meta.env.VITE_BASE_API_URL}/auth/me`, {
+            headers: {
+              "Authorization": `Bearer ${token}`,
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error("Failed to fetch user profile");
+          }
+
+          const data = await response.json();
+          const user = data.user;
+
+          set({ user, isLoading: false });
+          useUserProfileStore.getState().setUserProfile(user);
+        } catch (err) {
+          set({
+            error: (err as Error).message,
+            isLoading: false,
+            isAuthenticated: false,
+            token: null,
+            user: null,
+          });
+          throw err;
+        }
+      },
+
+      logout: async () => {
+        const currentToken = get().token; // Get current token from state
+
+        if (currentToken) {
+          try {
+            await fetch(`${import.meta.env.VITE_BASE_API_URL}/auth/logout`, {
+              method: "POST", // Or DELETE, depending on backend
+              headers: {
+                "Authorization": `Bearer ${currentToken}`,
+              },
+            });
+            console.log("Backend logout call successful (or ignored if 404/500)");
+          } catch (err) {
+            console.error("Error during backend logout call:", err);
+          }
+        }
+
         set({
           token: null,
           user: null,
@@ -163,8 +179,8 @@ const useAuthStore = create<AuthState>()(
       },
     }),
     {
-      name: "auth-storage", // unique name
-      storage: createJSONStorage(() => localStorage), // Use localStorage for persistence
+      name: "auth-storage",
+      storage: createJSONStorage(() => localStorage),
     }
   )
 );

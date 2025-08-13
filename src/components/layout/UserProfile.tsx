@@ -3,22 +3,30 @@ import { Button } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import useAuthStore from "../../store/auth-store";
-import { useUserProfileStore } from "../hooks/use-user-profile";
+import { useUserProfileStore } from "../../hooks/use-user-profile";
+import { useNavigate } from "react-router-dom"; // Added import
 
 export function UserProfile() {
   const logout = useAuthStore((state) => state.logout);
-  const { userProfile } = useUserProfileStore();
+  const userProfile = useUserProfileStore((state) => state.userProfile);
+  const isHydrated = useUserProfileStore((state) => state.isHydrated);
+  const navigate = useNavigate();
 
-  if (!userProfile) {
+  if (!isHydrated || !userProfile) {
+    // Or a loading spinner, or null
     return null;
   }
+
+  const handleLogout = async () => { // New async handler
+    await logout(); // Await the logout function
+    navigate("/login"); // Navigate after logout
+  };
 
   return (
     <DropdownMenu>
@@ -64,12 +72,8 @@ export function UserProfile() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>Profile</DropdownMenuItem>
-          <DropdownMenuItem>Settings</DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => logout()}>Log out</DropdownMenuItem>
+        
+        <DropdownMenuItem onClick={handleLogout}>Log out</DropdownMenuItem> {/* Changed onClick */}
       </DropdownMenuContent>
     </DropdownMenu>
   );

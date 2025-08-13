@@ -1,37 +1,35 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { X, ChevronLeft, ChevronRight, Check, Sparkles } from "lucide-react";
 import { Button } from "../ui/button";
 import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerClose,
-} from "../ui/drawer";
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from "../ui/card";
+import { Progress } from "../ui/progress";
 
 type TourStep = {
-  target: string;
   title: string;
   content: string;
 };
 
 const tourSteps: TourStep[] = [
   {
-    target: "#job-description",
     title: "Step 1: Define the Job",
-    content: "Start by providing the job title, key skills, and a detailed description of the role. The more information you provide, the better the AI can screen candidates.",
+    content:
+      "Start by providing the job details. The more information you provide, the better the AI can screen candidates.",
   },
   {
-    target: "#resume-upload",
     title: "Step 2: Upload Resumes",
-    content: "Upload the candidate resumes you want to screen. You can select multiple files at once.",
+    content:
+      "Upload the candidate resumes you want to screen. You can select multiple files at once.",
   },
   {
-    target: "#submit-analysis",
     title: "Step 3: Start the Analysis",
-    content: "Once you're ready, click the 'Analyze Resumes' button. Our AI will get to work, and you'll be redirected to the results page.",
+    content:
+      "Once you're ready, click the 'Analyze Resumes' button. Our AI will get to work, and you'll be redirected to the results page.",
   },
 ];
 
@@ -43,31 +41,11 @@ interface TourGuideProps {
 export function TourGuide({ isOpen, onClose }: TourGuideProps) {
   const [currentStep, setCurrentStep] = useState(0);
 
-  useEffect(() => {
-    if (isOpen) {
-      highlightElement(tourSteps[currentStep].target);
-    }
-    return () => {
-      unhighlightElement(tourSteps[currentStep].target);
-    };
-  }, [isOpen, currentStep]);
-
-  const highlightElement = (target: string) => {
-    const element = document.querySelector(target);
-    if (element) {
-      element.classList.add("tour-highlight");
-    }
-  };
-
-  const unhighlightElement = (target: string) => {
-    const element = document.querySelector(target);
-    if (element) {
-      element.classList.remove("tour-highlight");
-    }
-  };
+  if (!isOpen) {
+    return null;
+  }
 
   const handleNext = () => {
-    unhighlightElement(tourSteps[currentStep].target);
     if (currentStep < tourSteps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
@@ -76,53 +54,64 @@ export function TourGuide({ isOpen, onClose }: TourGuideProps) {
   };
 
   const handlePrev = () => {
-    unhighlightElement(tourSteps[currentStep].target);
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
   };
 
   const currentTourStep = tourSteps[currentStep];
+  const progress = ((currentStep + 1) / tourSteps.length) * 100;
 
   return (
-    <Drawer open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DrawerContent>
-        <div className="mx-auto w-full max-w-md">
-          <DrawerHeader>
-            <DrawerTitle className="flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-primary" />
-              {currentTourStep.title}
-            </DrawerTitle>
-            <DrawerDescription>{currentTourStep.content}</DrawerDescription>
-          </DrawerHeader>
-          <DrawerFooter className="flex-row gap-2">
-            {currentStep > 0 && (
-              <Button variant="outline" onClick={handlePrev}>
-                <ChevronLeft className="h-4 w-4 mr-1" />
-                Previous
-              </Button>
-            )}
-            <Button onClick={handleNext} className="flex-1">
-              {currentStep < tourSteps.length - 1 ? (
-                <>
-                  Next
-                  <ChevronRight className="h-4 w-4 ml-1" />
-                </>
-              ) : (
-                <>
-                  Finish Tour
-                  <Check className="h-4 w-4 ml-1" />
-                </>
-              )}
+    <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center">
+      <Card className="w-full max-w-md m-4">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="bg-primary/10 p-2 rounded-lg">
+                <Sparkles className="h-6 w-6 text-primary" />
+              </div>
+              <div>
+                <CardTitle className="text-lg">TalentPilot App Tour</CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  Step {currentStep + 1} of {tourSteps.length}
+                </p>
+              </div>
+            </div>
+            <Button variant="ghost" size="icon" onClick={onClose}>
+              <X className="h-4 w-4" />
             </Button>
-            <DrawerClose asChild>
-              <Button variant="ghost" onClick={onClose}>
-                <X className="h-4 w-4" />
-              </Button>
-            </DrawerClose>
-          </DrawerFooter>
-        </div>
-      </DrawerContent>
-    </Drawer>
+          </div>
+          <Progress value={progress} className="w-full mt-4 h-2" />
+        </CardHeader>
+        <CardContent className="p-6 text-center">
+          <h3 className="text-xl font-semibold mb-2 text-foreground">
+            {currentTourStep.title}
+          </h3>
+          <p className="text-muted-foreground">{currentTourStep.content}</p>
+        </CardContent>
+        <CardFooter className="flex-row gap-2 p-4 bg-card/50">
+          {currentStep > 0 && (
+            <Button variant="outline" onClick={handlePrev}>
+              <ChevronLeft className="h-4 w-4 mr-1" />
+              Previous
+            </Button>
+          )}
+          <Button onClick={handleNext} className="flex-1">
+            {currentStep < tourSteps.length - 1 ? (
+              <>
+                Next
+                <ChevronRight className="h-4 w-4 ml-1" />
+              </>
+            ) : (
+              <>
+                Finish Tour
+                <Check className="h-4 w-4 ml-1" />
+              </>
+            )}
+          </Button>
+        </CardFooter>
+      </Card>
+    </div>
   );
 }

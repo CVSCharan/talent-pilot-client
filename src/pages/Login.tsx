@@ -21,7 +21,7 @@ const Login = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/dashboard"); // Redirect to dashboard or desired page after login
+      navigate("/"); // Redirect to landing page after login
     }
     // Clear error when component mounts or unmounts
     return () => {
@@ -50,7 +50,7 @@ const Login = () => {
             Login
           </CardTitle>
           <CardDescription className="text-muted-foreground">
-            <img src="/logo.png" alt="TalentPilot Logo" className="h-8 w-auto mx-auto" />
+            Continue to TalentPilot
           </CardDescription>
         </CardHeader>
         <CardContent>

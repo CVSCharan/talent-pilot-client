@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { Header } from "./Header";
+import useAuthStore from "../../store/auth-store";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -10,6 +11,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
   const noScrollPaths = ["/login", "/forgot-password", "/signup", "/testimonials"];
   const shouldHideScroll = noScrollPaths.includes(location.pathname);
+
+  const { initializeAuth } = useAuthStore();
+
+  useEffect(() => {
+    initializeAuth();
+  }, []);
 
   useEffect(() => {
 

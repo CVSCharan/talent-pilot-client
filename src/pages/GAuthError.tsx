@@ -1,7 +1,6 @@
 import { Suspense, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Header } from "../components/layout/Header";
 import { XCircle } from "lucide-react";
 import { Button } from "../components/ui/button";
 
@@ -65,69 +64,62 @@ const AuthErrorContent = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <Header />
+    <main className="flex min-h-screen flex-col bg-background">
+      {/* Background gradient effect */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 z-0 pointer-events-none"></div>
 
-      <main className="flex-1 relative">
-        {/* Background gradient effect */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 z-0 pointer-events-none"></div>
-
-        <div className="container mx-auto px-4 py-12 md:py-16 lg:py-24 relative z-10 flex-grow flex items-center justify-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-            className="max-w-md w-full"
-          >
-            <div className="rounded-xl border border-border/40 shadow-sm overflow-hidden">
-              <div className="bg-card p-6 sm:p-8 md:p-10 rounded-[10px] text-center">
-                <div className="flex justify-center mb-6">
-                  <XCircle className="h-20 w-20 text-destructive" />
-                </div>
-                <h1 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight mb-4 text-destructive">
-                  Authentication Failed
-                </h1>
-                <p className="text-base sm:text-lg text-muted-foreground mb-6">
-                  {errorMessage}
+      <div className="container mx-auto px-4 py-12 md:py-16 lg:py-24 relative z-10 flex-grow flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="max-w-md w-full"
+        >
+          <div className="rounded-xl border border-border/40 shadow-sm overflow-hidden">
+            <div className="bg-card p-6 sm:p-8 md:p-10 rounded-[10px] text-center">
+              <div className="flex justify-center mb-6">
+                <XCircle className="h-20 w-20 text-destructive" />
+              </div>
+              <h1 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight mb-4 text-destructive">
+                Authentication Failed
+              </h1>
+              <p className="text-base sm:text-lg text-muted-foreground mb-6">
+                {errorMessage}
+              </p>
+              <div className="space-y-4">
+                <Button
+                  onClick={handleButtonClick}
+                  className="rounded-full px-6 py-2.5 font-medium"
+                >
+                  {buttonText}
+                </Button>
+                <p className="text-sm text-muted-foreground mt-4">
+                  Redirecting to {redirectText} in{" "}
+                  <span className="font-medium text-foreground">
+                    {countdown}
+                  </span>{" "}
+                  seconds...
                 </p>
-                <div className="space-y-4">
-                  <Button
-                    onClick={handleButtonClick}
-                    className="rounded-full px-6 py-2.5 font-medium"
-                  >
-                    {buttonText}
-                  </Button>
-                  <p className="text-sm text-muted-foreground mt-4">
-                    Redirecting to {redirectText} in{" "}
-                    <span className="font-medium text-foreground">
-                      {countdown}
-                    </span>{" "}
-                    seconds...
-                  </p>
-                </div>
               </div>
             </div>
-          </motion.div>
-        </div>
-      </main>
-    </div>
+          </div>
+        </motion.div>
+      </div>
+    </main>
   );
 };
 
 // Loading fallback component
 const LoadingFallback = () => {
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <Header />
-      <main className="flex-1 relative">
-        {/* Background gradient effect */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 z-0 pointer-events-none"></div>
+    <main className="flex min-h-screen flex-col bg-background">
+      {/* Background gradient effect */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 z-0 pointer-events-none"></div>
 
-        <div className="container mx-auto px-4 py-12 md:py-16 lg:py-24 relative z-10 flex-grow flex items-center justify-center">
-          <div className="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin"></div>
-        </div>
-      </main>
-    </div>
+      <div className="container mx-auto px-4 py-12 md:py-16 lg:py-24 relative z-10 flex-grow flex items-center justify-center">
+        <div className="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin"></div>
+      </div>
+    </main>
   );
 };
 

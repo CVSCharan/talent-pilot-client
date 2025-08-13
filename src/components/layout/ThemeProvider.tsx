@@ -16,7 +16,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     } else {
       document.documentElement.classList.add(theme);
     }
-    localStorage.setItem("theme", theme);
+    sessionStorage.setItem("theme", theme);
   }, [theme]);
 
   return <>{children}</>;

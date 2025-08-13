@@ -3,9 +3,8 @@
 import React, { Suspense, useEffect, useState, useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Header } from "../components/layout/Header";
 import { CheckCircle, XCircle } from "lucide-react";
-import Cookies from "js-cookie";
+
 import useAuthStore from "../store/auth-store";
 
 // Client component that safely uses useSearchParams
@@ -15,7 +14,7 @@ const AuthSuccessContent: React.FC = () => {
   const [countdown, setCountdown] = useState(3);
   const [redirectInitiated, setRedirectInitiated] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { googleLogin } = useAuthStore();
+  const { setTokenAndFetchUser } = useAuthStore();
 
   // Use useCallback to memoize the redirect function
   const handleRedirect = useCallback(() => {
@@ -55,43 +54,24 @@ const AuthSuccessContent: React.FC = () => {
 
     // Get token from URL
     const token = searchParams.get("token");
-    // console.log("Token from URL:", token);
 
     let timer: NodeJS.Timeout | null = null;
 
     // Process the token if it exists
     if (token) {
-      try {
-        // Store the token in cookies first to ensure it's available after refresh
-        Cookies.set("cvs_central_cluster_user_token", token, {
-          expires: 1, // 1 day
-          sameSite: "Strict",
+      setTokenAndFetchUser(token)
+        .then(() => {
+          // Start countdown after successful authentication
+          timer = startCountdown();
+        })
+        .catch((err) => {
+          console.error("Error setting token and fetching user profile:", err);
+          setError("Failed to authenticate. Please try again.");
+          // Redirect to login after a short delay
+          setTimeout(() => {
+            navigate("/login");
+          }, 2000);
         });
-
-        // Use the fetchUserProfile function from AuthContext
-        googleLogin(token)
-          .then(() => {
-            // Set authenticated state
-            // setIsAuthenticated(true);
-            // Start countdown after successful authentication
-            timer = startCountdown();
-          })
-          .catch((err) => {
-            console.error("Error fetching user profile:", err);
-            setError("Failed to authenticate. Please try again.");
-            // Redirect to login after a short delay
-            setTimeout(() => {
-              navigate("/login");
-            }, 2000);
-          });
-      } catch (error) {
-        console.error("Error processing token:", error);
-        setError("Authentication failed. Please try again.");
-        // Redirect to login after a short delay
-        setTimeout(() => {
-          navigate("/login");
-        }, 2000);
-      }
     } else {
       // No token found, redirect to login
       console.warn("No token found, redirecting to login");
@@ -102,83 +82,83 @@ const AuthSuccessContent: React.FC = () => {
     return () => {
       if (timer) clearInterval(timer);
     };
-  }, [searchParams, handleRedirect, redirectInitiated, navigate, startCountdown]);
+  }, [
+    searchParams,
+    handleRedirect,
+    redirectInitiated,
+    navigate,
+    startCountdown,
+    setTokenAndFetchUser,
+  ]);
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <Header />
+    <main className="flex min-h-screen flex-col bg-background">
+      {/* Background gradient effect */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 z-0 pointer-events-none"></div>
 
-      <main className="flex-1 relative">
-        {/* Background gradient effect */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 z-0 pointer-events-none"></div>
-
-        <div className="container mx-auto px-4 py-12 md:py-16 lg:py-24 relative z-10 flex-grow flex items-center justify-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-            className="max-w-md w-full"
-          >
-            <div className="rounded-xl border border-border/40 shadow-sm overflow-hidden">
-              <div className="bg-card p-6 sm:p-8 md:p-10 rounded-[10px] text-center">
-                {error ? (
-                  <>
-                    <div className="flex justify-center mb-6">
-                      <XCircle className="h-20 w-20 text-destructive" />
-                    </div>
-                    <h1 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight mb-4 text-destructive">
-                      Authentication Failed
-                    </h1>
-                    <p className="text-base sm:text-lg text-muted-foreground mb-2">
-                      {error}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      Redirecting to login page...
-                    </p>
-                  </>
-                ) : (
-                  <>
-                    <div className="flex justify-center mb-6">
-                      <CheckCircle className="h-20 w-20 text-primary" />
-                    </div>
-                    <h1 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight mb-4">
-                      Authentication Successful!
-                    </h1>
-                    <p className="text-base sm:text-lg text-muted-foreground mb-2">
-                      You have been successfully authenticated.
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      Redirecting to results in{" "}
-                      <span className="font-medium text-foreground">
-                        {countdown}
-                      </span>{" "}
-                      seconds...
-                    </p>
-                  </>
-                )}
-              </div>
+      <div className="container mx-auto px-4 py-12 md:py-16 lg:py-24 relative z-10 flex-grow flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="max-w-md w-full"
+        >
+          <div className="rounded-xl border border-border/40 shadow-sm overflow-hidden">
+            <div className="bg-card p-6 sm:p-8 md:p-10 rounded-[10px] text-center">
+              {error ? (
+                <>
+                  <div className="flex justify-center mb-6">
+                    <XCircle className="h-20 w-20 text-destructive" />
+                  </div>
+                  <h1 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight mb-4 text-destructive">
+                    Authentication Failed
+                  </h1>
+                  <p className="text-base sm:text-lg text-muted-foreground mb-2">
+                    {error}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    Redirecting to login page...
+                  </p>
+                </>
+              ) : (
+                <>
+                  <div className="flex justify-center mb-6">
+                    <CheckCircle className="h-20 w-20 text-primary" />
+                  </div>
+                  <h1 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight mb-4">
+                    Authentication Successful!
+                  </h1>
+                  <p className="text-base sm:text-lg text-muted-foreground mb-2">
+                    You have been successfully authenticated.
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    Redirecting to results in{" "}
+                    <span className="font-medium text-foreground">
+                      {countdown}
+                    </span>{" "}
+                    seconds...
+                  </p>
+                </>
+              )}
             </div>
-          </motion.div>
-        </div>
-      </main>
-    </div>
+          </div>
+        </motion.div>
+      </div>
+    </main>
   );
 };
 
 // Loading fallback component
 const LoadingFallback = () => {
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <Header />
-      <main className="flex-1 relative">
-        {/* Background gradient effect */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 z-0 pointer-events-none"></div>
+    <main className="flex min-h-screen flex-col bg-background">
+      {/* Background gradient effect */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 z-0 pointer-events-none"></div>
 
-        <div className="container mx-auto px-4 py-12 md:py-16 lg:py-24 relative z-10 flex-grow flex items-center justify-center">
-          <div className="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin"></div>
-        </div>
-      </main>
-    </div>
+      <div className="container mx-auto px-4 py-12 md:py-16 lg:py-24 relative z-10 flex-grow flex items-center justify-center">
+        <div className="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin"></div>
+      </div>
+    </main>
   );
 };
 
