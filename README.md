@@ -1,69 +1,91 @@
-# React + TypeScript + Vite
+# AI Screening Agent
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> This project is a web application that allows users to screen candidates for job openings using AI. Users can input job descriptions and resumes, and the AI will provide a screening analysis.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+*   **AI-Powered Screening:** Leverages AI to analyze job descriptions and resumes, providing insights into candidate suitability.
+*   **Job Input Form:** A user-friendly form to submit job details and upload resumes.
+*   **Results Display:** Clear and concise presentation of the AI's screening results.
+*   **User Authentication:** Secure user login and registration.
+*   **Responsive Design:** The application is designed to work on various screen sizes.
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+*   **Frontend:** React, TypeScript, Vite
+*   **Styling:** Tailwind CSS, Radix UI
+*   **State Management:** Zustand
+*   **Form Handling:** React Hook Form
+*   **Routing:** React Router
+*   **Linting:** ESLint
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Getting Started
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### Prerequisites
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+*   Node.js (v18 or higher)
+*   npm or yarn
+
+### Installation
+
+1.  Clone the repository:
+    ```bash
+    git clone https://github.com/your-username/ai-screening-agent.git
+    ```
+2.  Navigate to the project directory:
+    ```bash
+    cd ai-screening-agent-client
+    ```
+3.  Install the dependencies:
+    ```bash
+    npm install
+    ```
+
+### Running the Application
+
+To run the application in development mode, use the following command:
+
+```bash
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+This will start the development server at `http://localhost:5173`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Building the Application
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+To build the application for production, use the following command:
+
+```bash
+npm run build
 ```
+
+This will create a `dist` folder with the production-ready files.
+
+## Folder Structure
+
+```
+.
+├── public/
+│   └── logo.png
+├── src/
+│   ├── assets/
+│   ├── components/
+│   ├── hooks/
+│   ├── pages/
+│   ├── store/
+│   ├── types.ts
+│   └── main.tsx
+├── .gitignore
+├── index.html
+├── package.json
+├── README.md
+└── vite.config.ts
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to open an issue or submit a pull request.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
