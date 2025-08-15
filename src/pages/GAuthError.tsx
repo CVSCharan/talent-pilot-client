@@ -1,8 +1,14 @@
 import { Suspense, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { motion } from "framer-motion";
 import { XCircle } from "lucide-react";
 import { Button } from "../components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card";
 
 // Client component that safely uses useSearchParams
 const AuthErrorContent = () => {
@@ -16,32 +22,28 @@ const AuthErrorContent = () => {
   const [buttonText, setButtonText] = useState("Return to Login");
   const [redirectText, setRedirectText] = useState("login");
 
-  // First effect: process the error message and set up derived state
   useEffect(() => {
-    // Get error message from URL if it exists
     const error = searchParams.get("message") || searchParams.get("error");
     if (error) {
       const decodedError = decodeURIComponent(error);
-      setErrorMessage(decodedError);
-
-      // Update redirect path and button text based on error message
       const isNoAccountError = decodedError.includes("no-account-found");
-      setErrorMessage(isNoAccountError ? "No account found. Please register." : "Incorrect email or password.");
+      setErrorMessage(
+        isNoAccountError
+          ? "No account found. Please register."
+          : "Incorrect email or password."
+      );
       setRedirectPath(isNoAccountError ? "/signup" : "/login");
       setButtonText(isNoAccountError ? "Register Now" : "Return to Login");
       setRedirectText(isNoAccountError ? "registration" : "login");
     }
-  }, [searchParams]);
+  }, [searchParams, setErrorMessage, setRedirectPath, setButtonText, setRedirectText]);
 
-  // Second effect: handle the countdown and redirect
   useEffect(() => {
     let timer: NodeJS.Timeout | null = null;
-
     timer = setInterval(() => {
       setCountdown((prev) => {
         if (prev <= 1) {
           if (timer) clearInterval(timer);
-          // Use setTimeout to avoid state updates during render
           setTimeout(() => {
             navigate(redirectPath, { replace: true });
           }, 0);
@@ -56,67 +58,38 @@ const AuthErrorContent = () => {
     };
   }, [navigate, redirectPath]);
 
-  // Handle button click
   const handleButtonClick = () => {
-    // Use setTimeout to avoid state updates during render
     setTimeout(() => {
       navigate(redirectPath, { replace: true });
     }, 0);
   };
 
   return (
-    <main className="flex min-h-screen flex-col bg-background">
-      {/* Background gradient effect */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 z-0 pointer-events-none"></div>
-
-      <div className="container mx-auto px-4 py-12 md:py-16 lg:py-24 relative z-10 flex-grow flex items-center justify-center">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          className="max-w-md w-full"
-        >
-          <div className="rounded-xl border border-border/40 shadow-sm overflow-hidden">
-            <div className="bg-card p-6 sm:p-8 md:p-10 rounded-[10px] text-center">
-              <div className="flex justify-center mb-6">
-                <XCircle className="h-20 w-20 text-destructive" />
-              </div>
-              <h1 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight mb-4 text-destructive">
-                Authentication Failed
-              </h1>
-              <p className="text-base sm:text-lg text-muted-foreground mb-6">
-                {errorMessage}
-              </p>
-              <div className="space-y-4">
-                <Button
-                  onClick={handleButtonClick}
-                  className="rounded-full px-6 py-2.5 font-medium"
-                >
-                  {buttonText}
-                </Button>
-                <p className="text-sm text-muted-foreground mt-4">
-                  Redirecting to {redirectText} in{" "}
-                  <span className="font-medium text-foreground">
-                    {countdown}
-                  </span>{" "}
-                  seconds...
-                </p>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      </div>
+    <main className="flex items-center justify-center bg-background pt-12">
+      <Card className="w-full max-w-md">
+        <CardHeader className="text-center">
+          <XCircle className="h-16 w-16 text-destructive mx-auto mb-4" />
+          <CardTitle className="text-2xl font-bold text-destructive">
+            Authentication Failed
+          </CardTitle>
+          <CardDescription>{errorMessage}</CardDescription>
+        </CardHeader>
+        <CardContent className="text-center">
+          <Button onClick={handleButtonClick} className="mt-4">
+            {buttonText}
+          </Button>
+          <p className="text-sm text-muted-foreground mt-4">
+            Redirecting to {redirectText} in {countdown} seconds...
+          </p>
+        </CardContent>
+      </Card>
     </main>
   );
 };
 
-// Loading fallback component
 const LoadingFallback = () => {
   return (
     <main className="flex min-h-screen flex-col bg-background">
-      {/* Background gradient effect */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 z-0 pointer-events-none"></div>
-
       <div className="container mx-auto px-4 py-12 md:py-16 lg:py-24 relative z-10 flex-grow flex items-center justify-center">
         <div className="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin"></div>
       </div>
@@ -124,7 +97,6 @@ const LoadingFallback = () => {
   );
 };
 
-// Main page component with Suspense boundary
 const GAuthError = () => {
   return (
     <Suspense fallback={<LoadingFallback />}>

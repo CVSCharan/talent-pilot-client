@@ -22,7 +22,7 @@ const SignUp = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/dashboard"); // Redirect to dashboard or desired page after signup
+      navigate("/"); // Redirect to landing or desired page after signup
     }
     // Clear error when component mounts or unmounts
     return () => {

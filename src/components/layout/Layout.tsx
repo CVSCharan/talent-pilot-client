@@ -20,19 +20,20 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   }, []);
 
   useEffect(() => {
-
+    document.body.classList.add("bg-background");
     if (shouldHideScroll) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
     }
     return () => {
+      document.body.classList.remove("bg-background");
       document.body.style.overflow = "unset";
     };
   }, [shouldHideScroll]);
 
   return (
-    <div className="flex flex-col min-h-screen bg-background text-foreground antialiased">
+    <div className="flex flex-col min-h-screen text-foreground antialiased">
       <Header />
       <main className="flex-1 w-full">
         {children}

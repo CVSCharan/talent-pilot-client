@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ResultsDisplay } from "../components/results/ResultsDisplay";
 import { ResultsSkeleton } from "../components/results/ResultsSkeleton";
 import { TestimonialModal } from "../components/results/TestimonialModal";
@@ -6,21 +7,28 @@ import { useResultsStore } from "../store/results-store";
 import useAuthStore from "../store/auth-store";
 
 const ResultsPage = () => {
-  const { results, loading, hasHydrated } = useResultsStore();
+  const { results, loading } = useResultsStore();
   const { isAuthenticated } = useAuthStore();
-  const [showResults, setShowResults] = useState(false);
+  const navigate = useNavigate();
   const [isTestimonialModalOpen, setIsTestimonialModalOpen] = useState(false);
 
   useEffect(() => {
-    if (hasHydrated) {
-      setShowResults(true);
-      if (isAuthenticated) {
-        setTimeout(() => {
-          setIsTestimonialModalOpen(true);
-        }, 3000); // Open modal after 3 seconds
-      }
+    if (!loading && !results) {
+      navigate("/");
     }
-  }, [hasHydrated, isAuthenticated]);
+  }, [results, loading, navigate]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      setTimeout(() => {
+        setIsTestimonialModalOpen(true);
+      }, 3000); // Open modal after 3 seconds
+    }
+  }, [isAuthenticated]);
+
+  if (loading || !results) {
+    return <ResultsSkeleton />;
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -42,11 +50,7 @@ const ResultsPage = () => {
       {/* Main Content */}
       <div className="container mx-auto px-6 py-12">
         <div className="max-w-6xl mx-auto">
-          {showResults ? (
-            <ResultsDisplay loading={loading} results={results} />
-          ) : (
-            <ResultsSkeleton />
-          )}
+          <ResultsDisplay loading={loading} results={results} />
         </div>
       </div>
       <TestimonialModal

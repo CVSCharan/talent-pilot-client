@@ -9,15 +9,18 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   const { theme } = useThemeStore();
 
   useEffect(() => {
-    document.documentElement.classList.remove("light", "dark");
+    const body = document.body;
+    body.classList.remove("light", "dark");
     if (theme === "system") {
       const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-      document.documentElement.classList.add(systemTheme);
+      body.classList.add(systemTheme);
     } else {
-      document.documentElement.classList.add(theme);
+      body.classList.add(theme);
     }
     sessionStorage.setItem("theme", theme);
   }, [theme]);
 
   return <>{children}</>;
 }
+
+export default ThemeProvider;

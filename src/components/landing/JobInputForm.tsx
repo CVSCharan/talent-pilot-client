@@ -1,6 +1,5 @@
 import { ChevronRight, Upload } from "lucide-react";
 import { Button } from "../ui/button";
-import { Card, CardContent, CardFooter } from "../ui/card";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 import { Input } from "../ui/input";
@@ -45,146 +44,123 @@ export function JobInputForm({
   };
 
   return (
-    <Card id="job-context" className="w-full">
-      <CardContent className="space-y-6 p-6">
-        {/* Two-column grid layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Left Column - Job Details */}
-          <div className="space-y-6">
-            <div className="space-y-2">
-              <Label htmlFor="jobTitle">Job Title</Label>
-              <Input
-                id="jobTitle"
-                value={formData.jobTitle}
-                onChange={handleInputChange}
-                placeholder="e.g., Frontend Developer Intern"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="requiredSkills">Required Skills</Label>
-              <Input
-                id="requiredSkills"
-                value={formData.requiredSkills}
-                onChange={handleInputChange}
-                placeholder="e.g., React, JavaScript, HTML, CSS"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="coreResponsibilities">
-                Core Responsibilities
-              </Label>
-              <Textarea
-                id="coreResponsibilities"
-                value={formData.coreResponsibilities}
-                onChange={handleInputChange}
-                placeholder="Brief responsibilities for the role"
-                rows={4}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="bonusSkills">Bonus Skills (Optional)</Label>
-              <Input
-                id="bonusSkills"
-                value={formData.bonusSkills}
-                onChange={handleInputChange}
-                placeholder="e.g., AWS, Docker, MongoDB"
-              />
-            </div>
-          </div>
-
-          {/* Right Column - Requirements & Upload */}
-          <div className="space-y-6">
-            <div className="space-y-2">
-              <Label htmlFor="seniorityLevel">Seniority Level</Label>
-              <Input
-                id="seniorityLevel"
-                value={formData.seniorityLevel}
-                onChange={handleInputChange}
-                placeholder="e.g., Intern, Junior, Mid, Senior"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="preferredLocation">Preferred Location</Label>
-              <Input
-                id="preferredLocation"
-                value={formData.preferredLocation}
-                onChange={handleInputChange}
-                placeholder="e.g., Remote / Hyderabad / Bangalore"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="minimumExperience">
-                Minimum Experience (Years)
-              </Label>
-              <Input
-                id="minimumExperience"
-                type="number"
-                value={formData.minimumExperience}
-                onChange={handleInputChange}
-                placeholder="e.g., 0 for interns"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="educationRequirement">
-                Education Requirement
-              </Label>
-              <Input
-                id="educationRequirement"
-                value={formData.educationRequirement}
-                onChange={handleInputChange}
-                placeholder="e.g., B.Tech in CS/IT or equivalent"
-              />
-            </div>
-          </div>
+    <form onSubmit={handleFormSubmit} className="space-y-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-6">
+        <div className="space-y-2">
+          <Label htmlFor="jobTitle">Job Title</Label>
+          <Input
+            id="jobTitle"
+            value={formData.jobTitle}
+            onChange={handleInputChange}
+            placeholder="e.g., Frontend Developer Intern"
+            required
+          />
         </div>
-
-        {/* Resume Upload - Full Width Section */}
-        <div id="resume-upload" className="pt-6 mt-8">
-          <Label>Upload CV or Resume</Label>
-          <div
-            className="mt-2 p-6 border-2 border-dashed border-border/30 bg-input/20 rounded-xl text-center cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-all"
-            onClick={() =>
-              (
-                document.getElementById("resumeUpload") as HTMLInputElement
-              )?.click()
-            }
-          >
-            <input
-              id="resumeUpload"
-              type="file"
-              accept=".pdf"
-              className="hidden"
-              onChange={handleFileChange}
-            />
-            <div className="bg-primary/10 p-3 rounded-full mx-auto mb-4 inline-flex">
-              <Upload className="h-7 w-7 text-primary" />
-            </div>
-            <p className="font-semibold text-base mb-1">
-              Drop your files here or browse
-            </p>
-            <p className="text-sm text-muted-foreground">
-              {resume ? resume.name : "Supports: PDF only"}
-            </p>
-          </div>
+        <div className="space-y-2">
+          <Label htmlFor="requiredSkills">Required Skills</Label>
+          <Input
+            id="requiredSkills"
+            value={formData.requiredSkills}
+            onChange={handleInputChange}
+            placeholder="e.g., React, JavaScript, HTML, CSS"
+            required
+          />
         </div>
-      </CardContent>
+        <div className="lg:col-span-2 space-y-2">
+          <Label htmlFor="coreResponsibilities">Core Responsibilities</Label>
+          <Textarea
+            id="coreResponsibilities"
+            value={formData.coreResponsibilities}
+            onChange={handleInputChange}
+            placeholder="Brief responsibilities for the role"
+            rows={4}
+            required
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="bonusSkills">Bonus Skills (Optional)</Label>
+          <Input
+            id="bonusSkills"
+            value={formData.bonusSkills}
+            onChange={handleInputChange}
+            placeholder="e.g., AWS, Docker, MongoDB"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="seniorityLevel">Seniority Level</Label>
+          <Input
+            id="seniorityLevel"
+            value={formData.seniorityLevel}
+            onChange={handleInputChange}
+            placeholder="e.g., Intern, Junior, Mid, Senior"
+            required
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="preferredLocation">Preferred Location</Label>
+          <Input
+            id="preferredLocation"
+            value={formData.preferredLocation}
+            onChange={handleInputChange}
+            placeholder="e.g., Remote / Hyderabad / Bangalore"
+            required
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="minimumExperience">Minimum Experience (Years)</Label>
+          <Input
+            id="minimumExperience"
+            type="number"
+            value={formData.minimumExperience}
+            onChange={handleInputChange}
+            placeholder="e.g., 0 for interns"
+            required
+          />
+        </div>
+        <div className="lg:col-span-2 space-y-2">
+          <Label htmlFor="educationRequirement">Education Requirement</Label>
+          <Input
+            id="educationRequirement"
+            value={formData.educationRequirement}
+            onChange={handleInputChange}
+            placeholder="e.g., B.Tech in CS/IT or equivalent"
+            required
+          />
+        </div>
+      </div>
 
-      <CardFooter id="submit-analysis" className="p-4">
-        <Button
-          onClick={handleFormSubmit}
-          disabled={
-            loading ||
-            !formData.jobTitle?.trim() ||
-            !formData.requiredSkills?.trim() ||
-            !formData.coreResponsibilities?.trim() ||
-            !resume
+      <div id="resume-upload" className="space-y-2">
+        <Label>Upload CV or Resume</Label>
+        <div
+          className={`mt-2 p-6 border-2 border-dashed rounded-xl text-center cursor-pointer transition-all ${resume ? 'border-primary bg-primary/5' : 'border-border/30 bg-input/20 hover:border-primary/50 hover:bg-primary/5'}`}
+          onClick={() =>
+            (document.getElementById("resumeUpload") as HTMLInputElement)?.click()
           }
+        >
+          <input
+            id="resumeUpload"
+            type="file"
+            accept=".pdf"
+            className="hidden"
+            onChange={handleFileChange}
+            required
+          />
+          <div className="bg-primary/10 p-3 rounded-full mx-auto mb-4 inline-flex">
+            <Upload className="h-7 w-7 text-primary" />
+          </div>
+          <p className="font-semibold text-base mb-1">
+            {resume ? resume.name : "Drop your files here or browse"}
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Supports: PDF only
+          </p>
+        </div>
+      </div>
+
+      <div className="pt-6">
+        <Button
+          type="submit"
+          disabled={loading || !resume}
           size="lg"
           className="w-full font-bold text-lg tracking-wide shadow-lg hover:shadow-primary/30 transition-all transform hover:-translate-y-1 py-7"
         >
@@ -200,7 +176,7 @@ export function JobInputForm({
             </>
           )}
         </Button>
-      </CardFooter>
+      </div>
 
       <AuthPromptModal
         isOpen={isAuthModalOpen}
@@ -209,6 +185,6 @@ export function JobInputForm({
         skills={formData.requiredSkills}
         jobDescription={formData.coreResponsibilities}
       />
-    </Card>
+    </form>
   );
 }

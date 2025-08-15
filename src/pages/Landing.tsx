@@ -16,6 +16,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "../components/ui/dialog";
+import { Card, CardContent } from "../components/ui/card";
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -56,11 +57,9 @@ const Landing = () => {
     event?.preventDefault();
 
     if (!isAuthenticated) {
-      // This block should ideally not be reached if AuthPromptModal is used
-      // but kept as a fallback or for direct access scenarios
       useFormDataStore.getState().setFormData({
         ...formData,
-        pendingSubmission: false, // Ensure this is false if not from a pending submission
+        pendingSubmission: true,
       });
       navigate("/login");
       return;
@@ -126,7 +125,7 @@ const Landing = () => {
       !hasAttemptedSubmit
     ) {
       setShowResumeReuploadModal(true);
-      setHasAttemptedSubmit(true); // Mark that we've handled this state
+      setHasAttemptedSubmit(true);
     }
   }, [isAuthenticated, storedFormData?.pendingSubmission, hasAttemptedSubmit]);
 
@@ -134,37 +133,42 @@ const Landing = () => {
     <>
       <TourGuide isOpen={isTourOpen} onClose={() => setIsTourOpen(false)} />
       <div className="container mx-auto px-4 sm:px-6 flex-grow overflow-auto py-8 pt-12">
-        <div className="text-center mb-8">
+        <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">
             AI Powered Screening
           </h1>
+          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+            Streamline your hiring process with our AI-powered candidate screening tool. Get detailed analysis and insights in seconds.
+          </p>
           <Button
             onClick={() => setIsTourOpen(true)}
-            variant="ghost"
+            variant="outline"
             size="sm"
-            className="mt-4"
+            className="mt-6"
           >
             Take a Tour
           </Button>
         </div>
-        <div className="max-w-7xl mx-auto">
-          {isAuthenticated &&
-            storedFormData?.jobTitle &&
-            !storedFormData?.pendingSubmission && (
-              <ResumeReuploadPrompt
-                handleFileChange={handleFileChange}
-                resume={resume}
-              />
-            )}
-          <JobInputForm
-            formData={formData}
-            setFormData={setFormData}
-            resume={resume}
-            handleFileChange={handleFileChange}
-            handleSubmit={handleSubmit}
-            loading={loading}
-          />
-        </div>
+        <Card className="max-w-4xl mx-auto shadow-lg">
+          <CardContent className="p-8">
+            {isAuthenticated &&
+              storedFormData?.jobTitle &&
+              !storedFormData?.pendingSubmission && (
+                <ResumeReuploadPrompt
+                  handleFileChange={handleFileChange}
+                  resume={resume}
+                />
+              )}
+            <JobInputForm
+              formData={formData}
+              setFormData={setFormData}
+              resume={resume}
+              handleFileChange={handleFileChange}
+              handleSubmit={handleSubmit}
+              loading={loading}
+            />
+          </CardContent>
+        </Card>
       </div>
 
       {/* Resume Re-upload Modal */}
@@ -183,11 +187,11 @@ const Landing = () => {
             handleFileChange={handleFileChange}
             resume={resume}
           />
-          <div className="flex justify-end space-x-2">
+          <div className="flex justify-end space-x-2 mt-4">
             <Button
               onClick={() => {
                 setShowResumeReuploadModal(false);
-                clearFormData(); // Clear pending submission if user cancels
+                clearFormData();
               }}
               variant="outline"
             >
@@ -197,7 +201,7 @@ const Landing = () => {
               onClick={() => {
                 setShowResumeReuploadModal(false);
                 handleSubmit();
-                clearFormData(); // Clear pending submission after successful submission
+                clearFormData();
               }}
               disabled={!resume}
             >
