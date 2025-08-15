@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { Header } from "./Header";
 import useAuthStore from "../../store/auth-store";
+import { Toaster } from "../ui/sonner";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -31,11 +32,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   }, [shouldHideScroll]);
 
   return (
-    <div className="flex flex-col min-h-screen bg-background text-foreground">
+    <div className="flex flex-col min-h-screen bg-background text-foreground antialiased">
       <Header />
       <main className="flex-1 w-full">
         {children}
       </main>
+      <Toaster position="bottom-right" />
     </div>
   );
 };

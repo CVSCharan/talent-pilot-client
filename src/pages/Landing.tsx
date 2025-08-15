@@ -5,7 +5,6 @@ import { TourGuide } from "../components/landing/TourGuide";
 import { useResultsStore } from "../store/results-store";
 import { toast } from "sonner";
 import type { Results } from "../types";
-import { Sparkles } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { useFormDataStore } from "../store/form-data-store";
 import useAuthStore from "../store/auth-store";
@@ -136,16 +135,15 @@ const Landing = () => {
       <TourGuide isOpen={isTourOpen} onClose={() => setIsTourOpen(false)} />
       <div className="container mx-auto px-4 sm:px-6 flex-grow overflow-auto py-8 pt-12">
         <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-foreground">
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">
             AI Powered Screening
           </h1>
           <Button
             onClick={() => setIsTourOpen(true)}
-            variant="outline"
+            variant="ghost"
             size="sm"
             className="mt-4"
           >
-            <Sparkles className="mr-2 h-4 w-4" />
             Take a Tour
           </Button>
         </div>

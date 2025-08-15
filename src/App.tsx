@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
 
 import Layout from "./components/layout/Layout";
 import Landing from "./pages/Landing";
@@ -11,7 +12,6 @@ import GAuthError from "./pages/GAuthError";
 import GAuthSuccess from "./pages/GAuthSuccess";
 import Testimonials from "./pages/Testimonials";
 import NotFound from "./pages/NotFound";
-import { Toaster } from "./components/ui/sonner";
 
 function App() {
   const queryClient = new QueryClient();
@@ -30,7 +30,6 @@ function App() {
             <Route path="/testimonials" element={<Testimonials />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
-          <Toaster />
         </Layout>
       </BrowserRouter>
     </QueryClientProvider>

@@ -25,7 +25,8 @@ const AuthErrorContent = () => {
       setErrorMessage(decodedError);
 
       // Update redirect path and button text based on error message
-      const isNoAccountError = decodedError.includes("No account found");
+      const isNoAccountError = decodedError.includes("no-account-found");
+      setErrorMessage(isNoAccountError ? "No account found. Please register." : "Incorrect email or password.");
       setRedirectPath(isNoAccountError ? "/signup" : "/login");
       setButtonText(isNoAccountError ? "Register Now" : "Return to Login");
       setRedirectText(isNoAccountError ? "registration" : "login");

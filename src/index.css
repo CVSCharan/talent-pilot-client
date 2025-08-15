@@ -10,14 +10,14 @@
     --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
-    --primary: 221.2 83.2% 53.3%; /* A professional blue */
+    --primary: 220 90% 55%; /* A professional blue */
     --primary-foreground: 210 20% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
+    --secondary: 240 5% 96%;
+    --secondary-foreground: 240 6% 10%;
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 46%;
+    --accent: 240 5% 96%;
+    --accent-foreground: 240 6% 10%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 20% 98%;
     --border: 240 5.9% 90%;
@@ -25,9 +25,15 @@
     --ring: 221.2 83.2% 53.3%; /* Matches primary */
     --radius: 0.5rem;
 
+    /* Shadow variables */
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    
+    /* Animation variables */
+    --transition-fast: 150ms;
+    --transition-normal: 300ms;
+    --transition-slow: 500ms;
   }
 
   .dark {
@@ -37,13 +43,13 @@
     --card-foreground: 0 0% 98%;
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
-    --primary: 221.2 83.2% 53.3%; /* A professional blue */
+    --primary: 220 90% 55%; /* A professional blue */
     --primary-foreground: 210 20% 98%;
-    --secondary: 240 3.7% 15.9%;
+    --secondary: 240 4% 16%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
+    --muted: 240 4% 16%;
+    --muted-foreground: 240 5% 65%;
+    --accent: 240 4% 16%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
@@ -53,18 +59,62 @@
   }
 }
 
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+p {
+  line-height: 1.6;
+}
+
+/* Gradients */
 .ai-text-gradient {
   background-image: linear-gradient(to right, #a855f7, #d946ef);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
+/* Animations */
 .hover-lift {
-  transition: transform 0.2s ease-in-out;
+  transition: transform var(--transition-normal) ease-in-out;
 }
 
 .hover-lift:hover {
   transform: translateY(-3px);
+}
+
+/* Utility classes */
+.shadow-card {
+  box-shadow: var(--shadow-md);
+  transition: box-shadow var(--transition-normal) ease-in-out;
+}
+
+.shadow-card:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.focus-ring {
+  transition: all var(--transition-fast) ease-in-out;
+}
+
+.focus-ring:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--primary) / 0.4);
 }
 
 .tour-highlight {

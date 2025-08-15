@@ -1,16 +1,26 @@
 import { useEffect, useState } from "react";
 import { ResultsDisplay } from "../components/results/ResultsDisplay";
+import { ResultsSkeleton } from "../components/results/ResultsSkeleton";
+import { TestimonialModal } from "../components/results/TestimonialModal";
 import { useResultsStore } from "../store/results-store";
+import useAuthStore from "../store/auth-store";
 
 const ResultsPage = () => {
   const { results, loading, hasHydrated } = useResultsStore();
+  const { isAuthenticated } = useAuthStore();
   const [showResults, setShowResults] = useState(false);
+  const [isTestimonialModalOpen, setIsTestimonialModalOpen] = useState(false);
 
   useEffect(() => {
     if (hasHydrated) {
       setShowResults(true);
+      if (isAuthenticated) {
+        setTimeout(() => {
+          setIsTestimonialModalOpen(true);
+        }, 3000); // Open modal after 3 seconds
+      }
     }
-  }, [hasHydrated]);
+  }, [hasHydrated, isAuthenticated]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -18,10 +28,10 @@ const ResultsPage = () => {
       <div className="bg-card shadow-sm border-b border-border">
         <div className="container mx-auto px-6 py-8">
           <div className="text-center">
-            <h1 className="text-4xl font-bold text-foreground mb-2">
+            <h1 className="text-4xl md:text-5xl font-extrabold text-foreground mb-2">
               Candidate Screening Results
             </h1>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-md md:text-lg text-muted-foreground max-w-3xl mx-auto">
               Comprehensive AI-powered analysis and ranking of candidates based
               on job requirements and qualifications
             </p>
@@ -35,19 +45,14 @@ const ResultsPage = () => {
           {showResults ? (
             <ResultsDisplay loading={loading} results={results} />
           ) : (
-            <div className="bg-card rounded-lg shadow-sm border border-border p-12 text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-              <h2 className="text-xl font-semibold text-foreground mb-2">
-                Processing Results
-              </h2>
-              <p className="text-muted-foreground">
-                Please wait while we analyze and compile the screening
-                results...
-              </p>
-            </div>
+            <ResultsSkeleton />
           )}
         </div>
       </div>
+      <TestimonialModal
+        isOpen={isTestimonialModalOpen}
+        onClose={() => setIsTestimonialModalOpen(false)}
+      />
     </div>
   );
 };

@@ -20,7 +20,7 @@ export function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <Button variant="glass" size="icon" disabled>
+      <Button variant="outline" size="icon" className="w-9 h-9" disabled>
         <Sun className="h-[1.2rem] w-[1.2rem]" />
       </Button>
     );
@@ -29,7 +29,7 @@ export function ThemeToggle() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon" className="w-9">
+        <Button variant="outline" size="icon" className="w-9 h-9 transition-all duration-300 focus:ring-2 focus:ring-primary/20 focus:ring-offset-1">
           {theme === "light" && (
             <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
           )}
@@ -42,16 +42,16 @@ export function ThemeToggle() {
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="z-50">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
+      <DropdownMenuContent align="end" className="z-50 p-2" sideOffset={8}>
+        <DropdownMenuItem onClick={() => setTheme("light")} className="cursor-pointer focus:bg-muted/50 focus:text-foreground">
           <Sun className="mr-2 h-4 w-4" />
           <span>Light</span>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
+        <DropdownMenuItem onClick={() => setTheme("dark")} className="cursor-pointer focus:bg-muted/50 focus:text-foreground">
           <Moon className="mr-2 h-4 w-4" />
           <span>Dark</span>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
+        <DropdownMenuItem onClick={() => setTheme("system")} className="cursor-pointer focus:bg-muted/50 focus:text-foreground">
           <Monitor className="mr-2 h-4 w-4" />
           <span>System</span>
         </DropdownMenuItem>

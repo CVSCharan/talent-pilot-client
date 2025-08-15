@@ -61,7 +61,7 @@ const SignUp = () => {
               <Input
                 id="email"
                 type="email"
-                placeholder="m@example.com"
+                placeholder="talentpilot@example.com"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -72,6 +72,7 @@ const SignUp = () => {
               <Input
                 id="password"
                 type="password"
+                placeholder="********"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -81,6 +82,8 @@ const SignUp = () => {
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? "Signing up..." : "Sign Up"}
             </Button>
+          </form>
+          <div className="grid gap-4 mt-4">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t" />
@@ -119,7 +122,7 @@ const SignUp = () => {
                 Login
               </Link>
             </div>
-          </form>
+          </div>
         </CardContent>
       </Card>
     </main>

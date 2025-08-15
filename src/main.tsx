@@ -3,11 +3,14 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
 import { ThemeProvider } from "./components/layout/ThemeProvider.tsx";
+import { HelmetProvider } from "react-helmet-async";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ThemeProvider>
-      <App />
-    </ThemeProvider>
+    <HelmetProvider>
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>
+    </HelmetProvider>
   </StrictMode>
 );

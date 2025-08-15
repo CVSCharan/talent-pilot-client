@@ -23,9 +23,11 @@ export interface Candidate {
   recommendation: string;
 }
 
-export interface Results {
-  success: boolean;
-  statusCode: number;
-  message: string;
-  data: Candidate;
-}
+export type Results = Candidate[];
+
+export type Testimonial = {
+  id: number;
+  author: string;
+  testimonial: string;
+  rating: number;
+};

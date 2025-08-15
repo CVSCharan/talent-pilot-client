@@ -22,9 +22,9 @@ const tourSteps: TourStep[] = [
       "Start by providing the job details. The more information you provide, the better the AI can screen candidates.",
   },
   {
-    title: "Step 2: Upload Resumes",
+    title: "Step 2: Upload CV or Resume",
     content:
-      "Upload the candidate resumes you want to screen. You can select multiple files at once.",
+      "Upload the candidate CV or Resume you want to screen. You can select one file at a time.",
   },
   {
     title: "Step 3: Start the Analysis",
@@ -63,7 +63,7 @@ export function TourGuide({ isOpen, onClose }: TourGuideProps) {
   const progress = ((currentStep + 1) / tourSteps.length) * 100;
 
   return (
-    <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center backdrop-blur-sm">
       <Card className="w-full max-w-md m-4">
         <CardHeader>
           <div className="flex items-center justify-between">

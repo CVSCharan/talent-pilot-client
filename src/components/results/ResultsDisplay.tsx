@@ -95,7 +95,7 @@ export function ResultsDisplay({ loading, results }: ResultsDisplayProps) {
     );
   }
 
-  if (!results || !results.data) {
+  if (!results || results.length === 0) {
     return (
       <Card className="bg-card shadow-sm border">
         <CardContent className="p-12 text-center">
@@ -112,7 +112,7 @@ export function ResultsDisplay({ loading, results }: ResultsDisplayProps) {
   }
 
   // Handle single candidate result from your API response
-  const candidate = results.data;
+  const candidates = results;
 
   return (
     <div className="space-y-6">
@@ -136,7 +136,8 @@ export function ResultsDisplay({ loading, results }: ResultsDisplayProps) {
       </Card>
 
       {/* Candidate Result Card */}
-      <Card className="bg-card shadow-sm border hover:shadow-md transition-shadow">
+      {candidates.map((candidate, index) => (
+      <Card key={index} className="bg-card shadow-sm border hover:shadow-md transition-shadow">
         <CardContent className="p-8">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
             {/* Main Candidate Information */}
@@ -201,7 +202,7 @@ export function ResultsDisplay({ loading, results }: ResultsDisplayProps) {
                   </h4>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {candidate.skills.split(", ").map((skill, i) => (
+                  {candidate.skills.split(", ").map((skill: string, i: number) => (
                     <Badge
                       key={i}
                       variant="secondary"
@@ -304,6 +305,7 @@ export function ResultsDisplay({ loading, results }: ResultsDisplayProps) {
           </div>
         </CardContent>
       </Card>
+      ))}
     </div>
   );
 }
