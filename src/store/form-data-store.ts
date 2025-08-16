@@ -1,5 +1,6 @@
 
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface FormData {
   jobTitle: string;
@@ -19,8 +20,16 @@ interface FormDataStore {
   clearFormData: () => void;
 }
 
-export const useFormDataStore = create<FormDataStore>((set) => ({
-  formData: null,
-  setFormData: (data) => set((state) => ({ formData: { ...state.formData, ...data } })),
-  clearFormData: () => set({ formData: null }),
-}));
+export const useFormDataStore = create(
+  persist<FormDataStore>(
+    (set) => ({
+      formData: null,
+      setFormData: (data) =>
+        set((state) => ({ formData: { ...state.formData, ...data } })),
+      clearFormData: () => set({ formData: null }),
+    }),
+    {
+      name: "form-data-storage", // name of the item in the storage (must be unique)
+    }
+  )
+);

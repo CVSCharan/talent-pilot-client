@@ -22,7 +22,7 @@ const ResultsPage = () => {
     if (isAuthenticated) {
       setTimeout(() => {
         setIsTestimonialModalOpen(true);
-      }, 3000); // Open modal after 3 seconds
+      }, 60000); // Open modal after 60 seconds (1 minute)
     }
   }, [isAuthenticated]);
 
@@ -33,7 +33,7 @@ const ResultsPage = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Professional Header */}
-      <div className="bg-card shadow-sm border-b border-border">
+      <div className="text-center mt-12 mb-8">
         <div className="container mx-auto px-6 py-8">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-extrabold text-foreground mb-2">

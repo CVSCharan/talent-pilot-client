@@ -4,7 +4,6 @@ import { JobInputForm } from "../components/landing/JobInputForm";
 import { TourGuide } from "../components/landing/TourGuide";
 import { useResultsStore } from "../store/results-store";
 import { toast } from "sonner";
-import type { Results } from "../types";
 import { Button } from "../components/ui/button";
 import { useFormDataStore } from "../store/form-data-store";
 import useAuthStore from "../store/auth-store";
@@ -17,6 +16,7 @@ import {
   DialogTitle,
 } from "../components/ui/dialog";
 import { Card, CardContent } from "../components/ui/card";
+import type { ApiResponse } from "../types";
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -97,14 +97,15 @@ const Landing = () => {
         );
       }
 
-      const results: Results = await response.json();
-      console.log('Response from API:', results);
+      const apiResponse: ApiResponse = await response.json();
+      console.log('Response from API:', apiResponse);
 
-      setResults(results);
+      setResults(apiResponse.data);
       toast.success("Analysis complete!", {
         description: "Redirecting to the results page...",
       });
       navigate("/results");
+      clearFormData();
     } catch (error: unknown) {
       console.error("Analysis failed:", error);
       toast.error("Analysis failed", {

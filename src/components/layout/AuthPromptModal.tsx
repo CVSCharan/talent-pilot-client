@@ -17,8 +17,6 @@ interface AuthPromptModalProps {
   jobDescription: string; // This will be the coreResponsibilities
 }
 
-  
-
 export function AuthPromptModal({
   isOpen,
   onClose,
@@ -30,33 +28,31 @@ export function AuthPromptModal({
   const { setFormData } = useFormDataStore();
 
   const handleLoginClick = () => {
-    setFormData({ jobTitle, requiredSkills: skills, coreResponsibilities: jobDescription, pendingSubmission: true });
+    setFormData({
+      jobTitle,
+      requiredSkills: skills,
+      coreResponsibilities: jobDescription,
+      pendingSubmission: true,
+    });
     onClose();
     navigate("/login");
-  };
-
-  const handleSignupClick = () => {
-    setFormData({ jobTitle, requiredSkills: skills, coreResponsibilities: jobDescription, pendingSubmission: true });
-    onClose();
-    navigate("/signup");
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Login Required</DialogTitle>
-          <DialogDescription>
-            Please log in or sign up to analyze your resumes. Your entered job
+          <DialogTitle className="text-foreground">Login Required</DialogTitle>
+          <DialogDescription className="text-muted-foreground">
+            Please log in to analyze your resumes. Your entered job
             details will be saved.
           </DialogDescription>
         </DialogHeader>
-        <div className="flex justify-end space-x-2">
-          <Button variant="outline" onClick={onClose}>
+        <div className="flex justify-end space-x-2 pt-4">
+          <Button variant="outline" onClick={onClose} className="text-foreground">
             Cancel
           </Button>
           <Button onClick={handleLoginClick}>Login</Button>
-          <Button onClick={handleSignupClick}>Sign Up</Button>
         </div>
       </DialogContent>
     </Dialog>

@@ -37,7 +37,7 @@ export function UserProfile() {
         >
           <Avatar className="h-9 w-9">
             <AvatarImage
-              src={userProfile.photoUrl ?? "/avatars/01.png"}
+              src={userProfile.photoUrl}
               alt={userProfile.displayName ?? "User"}
             />
             <AvatarFallback>
@@ -72,7 +72,18 @@ export function UserProfile() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        
+        <DropdownMenuItem 
+          onClick={() => navigate("/history")}
+          className="cursor-pointer p-2 focus:bg-muted/50 focus:text-foreground"
+        >
+          <span className="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
+              <path d="M1 4s2-2 5-2 5 2 5 2v16s-2-2-5-2-5 2-5 2V4z"></path>
+              <path d="M12 4s2-2 5-2 5 2 5 2v16s-2-2-5-2-5 2-5 2V4z"></path>
+            </svg>
+            History
+          </span>
+        </DropdownMenuItem>
         <DropdownMenuItem 
           onClick={handleLogout} 
           className="cursor-pointer p-2 focus:bg-muted/50 focus:text-foreground"

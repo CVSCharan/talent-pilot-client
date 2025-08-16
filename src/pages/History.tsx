@@ -1,0 +1,113 @@
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useHistoryStore } from '../store/history-store';
+import { useResultsStore } from '../store/results-store';
+import { Button } from '../components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '../components/ui/card';
+import { TrendingUp } from "lucide-react";
+import type { Candidate } from '../types';
+
+const HistoryPage = () => {
+  const { history, loading, fetchHistory } = useHistoryStore();
+  const { setResults } = useResultsStore();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchHistory();
+  }, [fetchHistory]);
+
+  const handleViewResult = (candidate: Candidate) => {
+    setResults(candidate);
+    navigate('/results');
+  };
+
+  if (loading) {
+    return (
+      <div className="text-center mt-12">
+        <p>Loading history...</p>
+      </div>
+    );
+  }
+
+  if (!loading && history.length === 0) {
+    return (
+      <Card className="shadow-sm max-w-md mx-auto mt-12">
+        <CardContent className="p-12 text-center">
+          <TrendingUp className="h-16 w-16 text-muted-foreground/50 mx-auto mb-6" />
+          <h2 className="text-2xl font-semibold text-foreground mb-2">
+            No History to Display
+          </h2>
+          <p className="text-muted-foreground max-w-md mx-auto">
+            It seems there are no past screening results to show right now.
+          </p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <div className="bg-background">
+      <div className="text-center mt-12 mb-8">
+        <div className="container mx-auto px-6 py-8">
+          <div className="text-center">
+            <h1 className="text-4xl md:text-5xl font-extrabold text-foreground mb-2">
+              Screening History
+            </h1>
+            <p className="text-md md:text-lg text-muted-foreground max-w-3xl mx-auto">
+              A log of all previously screened candidates.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-6 py-12">
+        <div className="flex justify-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            {history.map((candidate) => (
+              <Card key={candidate.email} className="shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+                <CardHeader>
+                  <CardTitle className="text-2xl">{candidate.name}</CardTitle>
+                  <CardDescription>{candidate.email}</CardDescription>
+                </CardHeader>
+                <CardContent className="flex-grow">
+                  <div className="space-y-4">
+                    <div>
+                      <h4 className="text-sm font-medium text-muted-foreground mb-1">Last Role</h4>
+                      <p className="font-semibold">{candidate.jobHistory.split(';')[0]}</p>
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-medium text-muted-foreground mb-1">Top Skills</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {candidate.skills.split(',').slice(0, 5).map(skill => (
+                          <span key={skill} className="text-xs bg-secondary text-secondary-foreground px-2 py-1 rounded-full">{skill.trim()}</span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+                <CardFooter className="flex justify-between items-center bg-muted/50 p-4">
+                  <div>
+                      <p className="text-sm font-medium text-muted-foreground">Overall Score</p>
+                      <p className="text-3xl font-bold">{candidate.score}</p>
+                  </div>
+                  <Button onClick={() => handleViewResult(candidate)} size="lg">
+                    View Full Report
+                  </Button>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default HistoryPage;
