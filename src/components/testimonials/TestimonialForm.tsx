@@ -17,25 +17,13 @@ import { useState, useEffect } from "react";
 import { useToast } from "../lib/use-toast";
 import { useUserProfileStore } from "../../hooks/use-user-profile";
 import useAuthStore from "../../store/auth-store";
-import { CardContent, CardHeader, CardTitle } from "../ui/card";
-
-const testimonialSchema = z.object({
-  author: z.string().min(2, "Name is too short").max(50, "Name is too long"),
-  designation: z
-    .string()
-    .min(2, "Designation is too short")
-    .max(50, "Designation is too long"),
-  rating: z.number().min(1, "Rating is required"),
-  content: z
-    .string()
-    .min(10, "Testimonial is too short")
-    .max(500, "Testimonial is too long"),
-});
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { testimonialSchema } from "../../schemas/testimonialSchema";
 
 export const TestimonialForm = () => {
   const { toast } = useToast();
   const { userProfile } = useUserProfileStore();
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, token, user } = useAuthStore();
   const [hovered, setHovered] = useState(0);
 
   const form = useForm<z.infer<typeof testimonialSchema>>({
@@ -55,33 +43,68 @@ export const TestimonialForm = () => {
   }, [isAuthenticated, userProfile, form]);
 
   const onSubmit = async (values: z.infer<typeof testimonialSchema>) => {
+    let postData: {
+      authorName: string; // Always send authorName
+      designation: string;
+      rating: number;
+      content: string;
+    } = {
+      authorName:
+        isAuthenticated && userProfile
+          ? userProfile.displayName
+          : values.author, // Use display name if authenticated, else form value
+      designation: values.designation,
+      rating: values.rating,
+      content: values.content,
+    };
+
+    console.log("Sending postData:", postData);
+    console.log("isAuthenticated:", isAuthenticated);
+    console.log("token:", token);
+    console.log("user:", user);
+
     try {
-      // Add your submission logic here
-      console.log(values);
+      const response = await fetch(
+        `${import.meta.env.VITE_BASE_API_URL}/testimonials`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...(token && { Authorization: `Bearer ${token}` }), // Only add Authorization header if token exists
+          },
+          body: JSON.stringify(postData),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to submit testimonial");
+      }
+
       toast({
-        title: "Success!",
+        title: "Success! ",
         description: "Your testimonial has been submitted for approval.",
       });
       form.reset();
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to submit testimonial. Please try again.",
+        description: (error as Error).message,
         variant: "destructive",
       });
     }
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <Card className="max-w-2xl mx-auto my-4">
       <CardHeader>
-        <CardTitle className="text-center mt-2">
-          Share your valuable feedback
+        <CardTitle className="text-center">
+          Submit your valuable Feedback
         </CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
               name="rating"
@@ -149,7 +172,6 @@ export const TestimonialForm = () => {
                 )}
               />
             </div>
-
             <FormField
               control={form.control}
               name="content"
@@ -173,6 +195,6 @@ export const TestimonialForm = () => {
           </form>
         </Form>
       </CardContent>
-    </div>
+    </Card>
   );
 };

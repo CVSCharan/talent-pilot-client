@@ -85,7 +85,8 @@ const Landing = () => {
       const response = await fetch(`${import.meta.env.VITE_BASE_API_URL}/n8n`, {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: submissionData,
       });
@@ -98,7 +99,7 @@ const Landing = () => {
       }
 
       const apiResponse: ApiResponse = await response.json();
-      console.log('Response from API:', apiResponse);
+      console.log("Response from API:", apiResponse);
 
       setResults(apiResponse.data);
       toast.success("Analysis complete!", {
@@ -139,7 +140,8 @@ const Landing = () => {
             AI Powered Screening
           </h1>
           <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-            Streamline your hiring process with our AI-powered candidate screening tool. Get detailed analysis and insights in seconds.
+            Streamline your hiring process with our AI-powered candidate
+            screening tool. Get detailed analysis and insights in seconds.
           </p>
           <Button
             onClick={() => setIsTourOpen(true)}

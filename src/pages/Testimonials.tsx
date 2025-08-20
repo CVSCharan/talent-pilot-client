@@ -3,8 +3,6 @@ import { useTestimonialsStore } from "../store/testimonials-store";
 import { TestimonialCard } from "../components/testimonials/TestimonialCard";
 import { TestimonialCardSkeleton } from "../components/testimonials/TestimonialCardSkeleton";
 import { Container } from "../components/layout/Container";
-
-
 import { TestimonialForm } from "../components/testimonials/TestimonialForm";
 import {
   Carousel,
@@ -14,6 +12,7 @@ import {
   CarouselPrevious,
 } from "../components/ui/carousel";
 import useAuthStore from "../store/auth-store";
+import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 
 export const Testimonials = () => {
   const {
@@ -21,19 +20,39 @@ export const Testimonials = () => {
     isLoading: loading,
     error,
     fetchApprovedTestimonials: fetchTestimonials,
+    hasTestimonial,
+    checkHasTestimonial,
   } = useTestimonialsStore();
   const { isAuthenticated } = useAuthStore();
 
   useEffect(() => {
     fetchTestimonials();
-  }, [fetchTestimonials, isAuthenticated]);
+    if (isAuthenticated) {
+      checkHasTestimonial();
+    }
+  }, [fetchTestimonials, isAuthenticated, checkHasTestimonial]);
 
   return (
     <Container>
-      <div className="space-y-8">
-        <section>
+      <div className="space-y-12">
+        {isAuthenticated ? (
+          hasTestimonial ? (
+            <Card className="max-w-2xl mx-auto">
+              <CardHeader>
+                <CardTitle className="text-center">Thank You!</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-center text-muted-foreground">
+                  You have already submitted a testimonial. Thank you for your feedback!
+                </p>
+              </CardContent>
+            </Card>
+          ) : (
+            <TestimonialForm />
+          )
+        ) : (
           <TestimonialForm />
-        </section>
+        )}
 
         <section>
           {loading && (
