@@ -10,7 +10,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import SignUp from "./pages/SignUp";
 import GAuthError from "./pages/GAuthError";
 import GAuthSuccess from "./pages/GAuthSuccess";
-import Testimonials from "./pages/Testimonials";
+import TestimonialsPage from "./pages/Testimonials";
 import History from "./pages/History";
 import NotFound from "./pages/NotFound";
 
@@ -28,7 +28,7 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/auth/success" element={<GAuthSuccess />} />
             <Route path="/auth/error" element={<GAuthError />} />
-            <Route path="/testimonials" element={<Testimonials />} />
+            <Route path="/testimonials" element={<TestimonialsPage />} />
             <Route path="/history" element={<History />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

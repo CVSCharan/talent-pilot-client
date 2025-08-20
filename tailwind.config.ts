@@ -114,7 +114,41 @@ export default {
         lg: "var(--shadow-lg)",
         xl: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
       },
+      typography: ({ theme }: { theme: any }) => ({
+        DEFAULT: {
+          css: {
+            color: theme("colors.foreground"),
+            a: {
+              color: theme("colors.primary.DEFAULT"),
+              "&:hover": {
+                color: theme("colors.primary.DEFAULT"),
+              },
+            },
+            "h1, h2, h3, h4, h5, h6": {
+              color: theme("colors.foreground"),
+            },
+          },
+        },
+      }),
     },
   },
-  plugins: [tailwindAnimate, tailwindcssTypography, tailwindcssAspectRatio],
+  plugins: [
+    tailwindAnimate,
+    tailwindcssTypography,
+    tailwindcssAspectRatio,
+    function ({ addUtilities }: { addUtilities: any }) {
+      addUtilities({
+        ".bg-glass": {
+          "backgroundColor": "rgba(255, 255, 255, 0.1)",
+          "backdropFilter": "blur(10px)",
+          "border": "1px solid rgba(255, 255, 255, 0.1)",
+        },
+        ".dark .bg-glass": {
+          "backgroundColor": "rgba(0, 0, 0, 0.1)",
+          "backdropFilter": "blur(10px)",
+          "border": "1px solid rgba(255, 255, 255, 0.1)",
+        },
+      });
+    },
+  ],
 } satisfies Config;

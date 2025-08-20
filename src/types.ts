@@ -35,10 +35,15 @@ export interface ApiResponse {
 export type Results = Candidate; // Changed from Candidate[] to Candidate
 
 export type Testimonial = {
-  id: number;
+  _id: string;
   author: string;
-  testimonial: string;
+  content: string;
   rating: number;
+  approved: boolean;
+  designation: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  __v?: number;
 };
 
 export type FormData = {

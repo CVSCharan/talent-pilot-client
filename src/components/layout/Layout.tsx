@@ -10,7 +10,7 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
-  const noScrollPaths = ["/login", "/forgot-password", "/signup", "/testimonials"];
+  const noScrollPaths = ["/login", "/forgot-password", "/signup", "/auth/success", "/auth/error"];
   const shouldHideScroll = noScrollPaths.includes(location.pathname);
 
   const { initializeAuth } = useAuthStore();

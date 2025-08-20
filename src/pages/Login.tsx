@@ -44,7 +44,7 @@ const Login = () => {
 
   return (
     <main className="flex items-center justify-center bg-background pt-12">
-      <Card className="w-full max-w-md bg-card/60 backdrop-blur-sm rounded-2xl">
+      <Card className="w-full max-w-md bg-glass rounded-2xl">
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold text-foreground">
             Login

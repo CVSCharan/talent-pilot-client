@@ -1,108 +1,80 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { useTestimonialsStore } from "../store/testimonials-store";
-import { Button } from "../components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
-import { Input } from "../components/ui/input";
-import { Label } from "../components/ui/label";
-import { Textarea } from "../components/ui/textarea";
-import { Star, StarHalf } from "lucide-react";
+import { TestimonialCard } from "../components/testimonials/TestimonialCard";
+import { TestimonialCardSkeleton } from "../components/testimonials/TestimonialCardSkeleton";
+import { Container } from "../components/layout/Container";
 
-const TestimonialsPage = () => {
-  const { testimonials, addTestimonial } = useTestimonialsStore();
-  const [author, setAuthor] = useState("");
-  const [testimonial, setTestimonial] = useState("");
-  const [rating, setRating] = useState(0);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (author && testimonial && rating > 0) {
-      addTestimonial({ author, testimonial, rating });
-      setAuthor("");
-      setTestimonial("");
-      setRating(0);
-    }
-  };
+import { TestimonialForm } from "../components/testimonials/TestimonialForm";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "../components/ui/carousel";
+import useAuthStore from "../store/auth-store";
+
+export const Testimonials = () => {
+  const {
+    testimonials,
+    isLoading: loading,
+    error,
+    fetchApprovedTestimonials: fetchTestimonials,
+  } = useTestimonialsStore();
+  const { isAuthenticated } = useAuthStore();
+
+  useEffect(() => {
+    fetchTestimonials();
+  }, [fetchTestimonials, isAuthenticated]);
 
   return (
-    <div className="container mx-auto px-6 py-12">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl md:text-5xl font-extrabold text-foreground mb-8 text-center">
-          Testimonials
-        </h1>
-        <Card>
-          <CardHeader>
-            <CardTitle>Leave a Testimonial</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="author">Your Name</Label>
-                <Input
-                  id="author"
-                  value={author}
-                  onChange={(e) => setAuthor(e.target.value)}
-                  placeholder="John Doe"
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="testimonial">Your Testimonial</Label>
-                <Textarea
-                  id="testimonial"
-                  value={testimonial}
-                  onChange={(e) => setTestimonial(e.target.value)}
-                  placeholder="What did you think of our service?"
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>Rating</Label>
-                <div className="flex items-center space-x-1">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <button
-                      key={star}
-                      type="button"
-                      onClick={() => setRating(star)}
-                      className="focus:outline-none"
-                    >
-                      <Star
-                        className={`h-6 w-6 ${star <= rating ? "text-yellow-400" : "text-gray-300"}`}
-                      />
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <Button type="submit">Submit Testimonial</Button>
-            </form>
-          </CardContent>
-        </Card>
+    <Container>
+      <div className="space-y-8">
+        <section>
+          <TestimonialForm />
+        </section>
 
-        <div className="mt-12">
-          <h2 className="text-3xl font-bold text-foreground mb-6">What Others Are Saying</h2>
-          <div className="space-y-6">
-            {testimonials.map((t) => (
-              <Card key={t.id}>
-                <CardContent className="p-6">
-                  <div className="flex items-center mb-4">
-                    <div className="flex items-center space-x-1">
-                      {[...Array(Math.floor(t.rating))].map((_, i) => (
-                        <Star key={i} className="h-5 w-5 text-yellow-400" />
-                      ))}
-                      {t.rating % 1 !== 0 && (
-                        <StarHalf className="h-5 w-5 text-yellow-400" />
-                      )}
-                    </div>
-                  </div>
-                  <p className="text-lg text-foreground mb-4">{t.testimonial}</p>
-                  <p className="text-md font-semibold text-muted-foreground">- {t.author}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
+        <section>
+          {loading && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {Array.from({ length: 4 }).map((_, index) => (
+                <TestimonialCardSkeleton key={index} />
+              ))}
+            </div>
+          )}
+          {error && <p className="text-red-500">{error}</p>}
+          {!loading && !error && testimonials.length > 0 && (
+            <Carousel
+              opts={{
+                align: "start",
+                loop: true,
+              }}
+              className="w-full max-w-4xl mx-auto"
+            >
+              <CarouselContent>
+                {testimonials.map((testimonial) => (
+                  <CarouselItem
+                    key={testimonial._id}
+                    className="md:basis-1/2 p-4"
+                  >
+                    <TestimonialCard testimonial={testimonial} />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+          )}
+          {!loading && !error && testimonials.length === 0 && (
+            <p className="text-center text-muted-foreground">
+              No testimonials yet. Be the first to leave one!
+            </p>
+          )}
+        </section>
       </div>
-    </div>
+    </Container>
   );
 };
 
-export default TestimonialsPage;
+export default Testimonials;

@@ -19,11 +19,31 @@ const ResultsPage = () => {
   }, [results, loading, navigate]);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      setTimeout(() => {
-        setIsTestimonialModalOpen(true);
-      }, 60000); // Open modal after 60 seconds (1 minute)
-    }
+    const checkTestimonial = async () => {
+      if (isAuthenticated) {
+        try {
+          const token = useAuthStore.getState().token;
+          const response = await fetch(
+            `${import.meta.env.VITE_BASE_API_URL}/testimonials/has-testimonial`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          const data = await response.json();
+          if (!data.hasTestimonial) {
+            setTimeout(() => {
+              setIsTestimonialModalOpen(true);
+            }, 60000); // Open modal after 60 seconds (1 minute)
+          }
+        } catch (error) {
+          console.error("Failed to check testimonial status:", error);
+        }
+      }
+    };
+
+    checkTestimonial();
   }, [isAuthenticated]);
 
   if (loading || !results) {
