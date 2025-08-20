@@ -11,12 +11,13 @@ interface TestimonialsState {
   checkHasTestimonial: () => Promise<void>;
 }
 
-export const useTestimonialsStore = create<TestimonialsState>((set) => ({
+export const useTestimonialsStore = create<TestimonialsState>((set, get) => ({
   testimonials: [],
   isLoading: false,
   error: null,
   hasTestimonial: false,
   fetchApprovedTestimonials: async () => {
+    if (get().isLoading) return;
     set({ isLoading: true, error: null });
     try {
       const response = await fetch(`${import.meta.env.VITE_BASE_API_URL}/testimonials/approved`);
