@@ -12,11 +12,20 @@ export function Header() {
       <div className="container flex h-16 max-w-screen-2xl items-center px-4 sm:px-6 lg:px-8">
         <div className="flex items-center">
           <Link to="/" className="flex items-center space-x-2">
-            <img src="/logo.png" alt="TalentPilot Logo" className="h-6 w-auto" />
+            <img
+              src="/logo.png"
+              alt="TalentPilot Logo"
+              className="h-6 w-auto"
+            />
           </Link>
         </div>
         <div className="flex flex-1 items-center justify-end space-x-4">
-          <nav className={cn("flex items-center", isAuthenticated ? "space-x-4" : "space-x-2")}>
+          <nav
+            className={cn(
+              "flex items-center",
+              isAuthenticated ? "space-x-4" : "space-x-2"
+            )}
+          >
             {isAuthenticated && <UserProfile />}
             <ThemeToggle />
           </nav>

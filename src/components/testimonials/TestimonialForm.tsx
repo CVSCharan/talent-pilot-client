@@ -14,14 +14,13 @@ import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { Star } from "lucide-react";
 import { useState, useEffect } from "react";
-import { useToast } from "../lib/use-toast";
+import { toast } from "../lib/sonner-toast";
 import { useUserProfileStore } from "../../hooks/use-user-profile";
 import useAuthStore from "../../store/auth-store";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { testimonialSchema } from "../../schemas/testimonialSchema";
 
 export const TestimonialForm = () => {
-  const { toast } = useToast();
   const { userProfile } = useUserProfileStore();
   const { isAuthenticated, token, user } = useAuthStore();
   const [hovered, setHovered] = useState(0);
@@ -81,16 +80,13 @@ export const TestimonialForm = () => {
         throw new Error(errorData.message || "Failed to submit testimonial");
       }
 
-      toast({
-        title: "Success! ",
-        description: "Your testimonial has been submitted for approval.",
+      toast.success("Thank you for your feedback!", {
+        description: "Your feedback helps us improve.",
       });
       form.reset();
     } catch (error) {
-      toast({
-        title: "Error",
+      toast.error("Error submitting testimonial", {
         description: (error as Error).message,
-        variant: "destructive",
       });
     }
   };
@@ -99,7 +95,7 @@ export const TestimonialForm = () => {
     <Card className="max-w-2xl mx-auto my-4">
       <CardHeader>
         <CardTitle className="text-center">
-          Submit your valuable Feedback
+          Share your valuable Feedback
         </CardTitle>
       </CardHeader>
       <CardContent>
