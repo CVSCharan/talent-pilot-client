@@ -132,11 +132,11 @@ export const Testimonials = () => {
           <div className="flex items-center justify-center space-x-4 mt-4">
             <CarouselPrevious
               variant="outline"
-              className="relative static transform-none -left-0 top-auto"
+              className="static transform-none -left-0 top-auto"
             />
             <CarouselNext
               variant="outline"
-              className="relative static transform-none -right-0 top-auto"
+              className="static transform-none -right-0 top-auto"
             />
           </div>
         )}
