@@ -10,7 +10,8 @@ import {
 } from "../ui/dropdown-menu";
 import useAuthStore from "../../store/auth-store";
 import { useUserProfileStore } from "../../hooks/use-user-profile";
-import { useNavigate } from "react-router-dom"; // Added import
+import { useNavigate } from "react-router-dom";
+import { ChevronDown } from "lucide-react";
 
 export function UserProfile() {
   const logout = useAuthStore((state) => state.logout);
@@ -23,9 +24,9 @@ export function UserProfile() {
     return null;
   }
 
-  const handleLogout = async () => { // New async handler
-    await logout(); // Await the logout function
-    navigate("/login"); // Navigate after logout
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login");
   };
 
   return (
@@ -33,7 +34,7 @@ export function UserProfile() {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="relative flex items-center gap-2 transition-all duration-300 hover:bg-muted/50 focus:ring-2 focus:ring-primary/20 focus:ring-offset-1"
+          className="group relative flex items-center gap-1 transition-all duration-300 hover:bg-muted/50 focus:ring-2 focus:ring-primary/20 focus:ring-offset-1"
         >
           <Avatar className="h-9 w-9">
             <AvatarImage
@@ -44,9 +45,7 @@ export function UserProfile() {
               {userProfile.displayName?.[0].toUpperCase() ?? "U"}
             </AvatarFallback>
           </Avatar>
-          <span className="font-semibold text-primary truncate">
-            {userProfile.displayName}
-          </span>
+          <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-180" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-64 p-2" align="end" forceMount sideOffset={8}>

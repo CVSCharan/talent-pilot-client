@@ -31,7 +31,9 @@ export const useHistoryStore = create<HistoryState>((set) => ({
         throw new Error('Failed to fetch history');
       }
       const data = await response.json();
-      const historyData = data.map((item: any) => item.responseData.data);
+      const historyData = data
+        .map((item: any) => item.responseData?.data)
+        .filter((item: any): item is Candidate => !!item);
       set({ history: historyData || [], loading: false });
     } catch (error) {
       console.error(error);

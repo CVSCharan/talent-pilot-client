@@ -120,6 +120,7 @@ const useAuthStore = create<AuthState>()(
       },
 
       setTokenAndFetchUser: async (token: string) => {
+        if (get().isLoading) return;
         set({ isLoading: true, error: null });
         try {
           set({ token, isAuthenticated: true });

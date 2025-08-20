@@ -18,7 +18,7 @@ const getInitials = (name: string | undefined) => {
 
 export const TestimonialCard = ({ testimonial }: TestimonialCardProps) => {
   return (
-    <Card className="bg-card/50 dark:bg-card/20 border-border/50 shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col h-full">
+    <Card className="bg-card/50 dark:bg-card/50 border-border/50 shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col h-full">
       <CardContent className="p-6 flex flex-col flex-grow">
         <div className="flex items-center mb-4">
           {[...Array(5)].map((_, i) => (
