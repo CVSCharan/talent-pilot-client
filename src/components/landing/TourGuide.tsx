@@ -29,7 +29,7 @@ const tourSteps: TourStep[] = [
   {
     title: "Step 3: Start the Analysis",
     content:
-      "Once you're ready, click the 'Analyze Resumes' button. Our AI will get to work, and you'll be redirected to the results page.",
+      "Once you're ready, click the 'AI Analyze' button. Our AI will get to work, and you'll be redirected to the results page.",
   },
 ];
 

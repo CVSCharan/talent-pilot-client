@@ -1,4 +1,4 @@
-import { ChevronRight, Upload } from "lucide-react";
+import { Upload, Loader2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
@@ -132,9 +132,15 @@ export function JobInputForm({
       <div id="resume-upload" className="space-y-2">
         <Label>Upload CV or Resume</Label>
         <div
-          className={`mt-2 p-6 border-2 border-dashed rounded-xl text-center cursor-pointer transition-all ${resume ? 'border-primary bg-primary/5' : 'border-border/30 bg-input/20 hover:border-primary/50 hover:bg-primary/5'}`}
+          className={`mt-2 p-6 border-2 border-dashed rounded-xl text-center cursor-pointer transition-all ${
+            resume
+              ? "border-primary bg-primary/5"
+              : "border-border/30 bg-input/20 hover:border-primary/50 hover:bg-primary/5"
+          }`}
           onClick={() =>
-            (document.getElementById("resumeUpload") as HTMLInputElement)?.click()
+            (
+              document.getElementById("resumeUpload") as HTMLInputElement
+            )?.click()
           }
         >
           <input
@@ -151,9 +157,7 @@ export function JobInputForm({
           <p className="font-semibold text-base mb-1">
             {resume ? resume.name : "Drop your files here or browse"}
           </p>
-          <p className="text-sm text-muted-foreground">
-            Supports: PDF only
-          </p>
+          <p className="text-sm text-muted-foreground">Supports: PDF only</p>
         </div>
       </div>
 
@@ -166,13 +170,12 @@ export function JobInputForm({
         >
           {loading ? (
             <>
-              <div className="h-6 w-6 rounded-full animate-spin"></div>
+              <Loader2 className="h-6 w-6 animate-spin" />
               <span className="ml-4">Analyzing...</span>
             </>
           ) : (
             <>
-              <span>Analyze Resumes</span>
-              <ChevronRight className="h-6 w-6 ml-3" />
+              <span>AI Analyze</span>
             </>
           )}
         </Button>
