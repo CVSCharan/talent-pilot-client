@@ -65,24 +65,28 @@ const AuthErrorContent = () => {
   };
 
   return (
-    <main className="flex items-center justify-center bg-background pt-12">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <XCircle className="h-16 w-16 text-destructive mx-auto mb-4" />
-          <CardTitle className="text-2xl font-bold text-destructive">
-            Authentication Failed
-          </CardTitle>
-          <CardDescription>{errorMessage}</CardDescription>
-        </CardHeader>
-        <CardContent className="text-center">
-          <Button onClick={handleButtonClick} className="mt-4">
-            {buttonText}
-          </Button>
-          <p className="text-sm text-muted-foreground mt-4">
-            Redirecting to {redirectText} in {countdown} seconds...
-          </p>
-        </CardContent>
-      </Card>
+    <main className="flex flex-col items-center justify-center bg-background px-4 sm:px-6 lg:px-8 pt-12">
+      <div className="w-full max-w-md mx-auto">
+        <Card className="w-full shadow-lg">
+          <CardHeader className="text-center">
+            <XCircle className="h-16 w-16 text-destructive mx-auto mb-4" />
+            <CardTitle className="text-2xl sm:text-3xl font-bold text-destructive">
+              Authentication Failed
+            </CardTitle>
+            <CardDescription className="px-4">
+              {errorMessage}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="text-center pb-8">
+            <Button onClick={handleButtonClick} className="mt-4">
+              {buttonText}
+            </Button>
+            <p className="text-sm text-muted-foreground mt-4">
+              Redirecting to {redirectText} in {countdown} seconds...
+            </p>
+          </CardContent>
+        </Card>
+      </div>
     </main>
   );
 };
