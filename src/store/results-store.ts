@@ -1,10 +1,10 @@
 import { create } from 'zustand';
-import type { Results } from '../types';
+import type { ScreeningResult } from '../types';
 
 interface ResultsState {
-  results: Results | null;
+  results: ScreeningResult[] | null;
   loading: boolean;
-  setResults: (results: Results | null) => void;
+  setResults: (results: ScreeningResult[] | null) => void;
   setLoading: (loading: boolean) => void;
 }
 

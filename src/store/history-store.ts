@@ -1,9 +1,9 @@
 import { create } from 'zustand';
-import type { Candidate } from '../types';
+import type { ScreeningResult } from '../types';
 import useAuthStore from './auth-store';
 
 interface HistoryState {
-  history: Candidate[];
+  history: ScreeningResult[];
   loading: boolean;
   fetchHistory: () => Promise<void>;
 }
@@ -31,9 +31,8 @@ export const useHistoryStore = create<HistoryState>((set) => ({
         throw new Error('Failed to fetch history');
       }
       const data = await response.json();
-      const historyData = data
-        .map((item: any) => item.responseData?.data)
-        .filter((item: any): item is Candidate => !!item);
+      // The API returns an array of arrays of ScreeningResult
+      const historyData = data.flat().filter((item: any): item is ScreeningResult => !!item);
       set({ history: historyData || [], loading: false });
     } catch (error) {
       console.error(error);

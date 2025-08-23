@@ -12,7 +12,7 @@ import {
   CardTitle,
 } from "../components/ui/card";
 import { TrendingUp } from "lucide-react";
-import type { Candidate } from "../types";
+import type { ScreeningResult } from "../types";
 import { Skeleton } from "../components/ui/skeleton";
 import useAuthStore from "../store/auth-store";
 
@@ -38,8 +38,8 @@ const HistoryPage = () => {
     }
   }, [isAuthenticated, fetchHistory]);
 
-  const handleViewResult = (candidate: Candidate) => {
-    setResults(candidate);
+  const handleViewResult = (result: ScreeningResult) => {
+    setResults([result]);
     navigate("/results");
   };
 
@@ -122,36 +122,35 @@ const HistoryPage = () => {
       <div className="container mx-auto px-6 py-12">
         <div className="flex justify-center">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12">
-            {history.map((candidate) => (
+            {history.map((result) => (
               <Card
-                key={candidate.email}
+                key={result.email_address}
                 className="shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col"
               >
                 <CardHeader>
                   <CardTitle className="text-xl sm:text-2xl">
-                    {candidate.name}
+                    {result.candidate_name}
                   </CardTitle>
-                  <CardDescription>{candidate.email}</CardDescription>
+                  <CardDescription>{result.recommendation}</CardDescription>
                 </CardHeader>
                 <CardContent className="flex-grow">
                   <div className="space-y-4">
                     <div>
                       <h4 className="text-sm font-medium text-muted-foreground mb-1">
-                        Last Role
+                        Justification
                       </h4>
                       <p className="font-semibold">
-                        {candidate.jobHistory.split(";")[0]}
+                        {result.justification.slice(0, 100)}...
                       </p>
                     </div>
                     <div>
                       <h4 className="text-sm font-medium text-muted-foreground mb-1">
-                        Top Skills
+                        Key Strengths
                       </h4>
                       <div className="flex flex-wrap gap-2">
-                        {candidate.skills
-                          .split(",")
+                        {result.key_strengths
                           .slice(0, 5)
-                          .map((skill) => (
+                          .map((skill: string) => (
                             <span
                               key={skill}
                               className="text-xs bg-secondary text-secondary-foreground px-2 py-1 rounded-full"
@@ -166,14 +165,14 @@ const HistoryPage = () => {
                 <CardFooter className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sm:gap-0 bg-muted/50 p-4">
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">
-                      Overall Score
+                      Final Score
                     </p>
                     <p className="text-2xl sm:text-3xl font-bold">
-                      {candidate.score}
+                      {result.final_score}
                     </p>
                   </div>
                   <Button
-                    onClick={() => handleViewResult(candidate)}
+                    onClick={() => handleViewResult(result)}
                     size="md"
                     className="w-full sm:w-auto"
                   >

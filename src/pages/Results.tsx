@@ -5,6 +5,7 @@ import { ResultsSkeleton } from "../components/results/ResultsSkeleton";
 import { TestimonialModal } from "../components/results/TestimonialModal";
 import { useResultsStore } from "../store/results-store";
 import useAuthStore from "../store/auth-store";
+import { useTestimonialsStore } from "../store/testimonials-store";
 
 const ResultsPage = () => {
   const { results, loading } = useResultsStore();
@@ -19,32 +20,23 @@ const ResultsPage = () => {
   }, [results, loading, navigate]);
 
   useEffect(() => {
-    const checkTestimonial = async () => {
-      if (isAuthenticated) {
-        try {
-          const token = useAuthStore.getState().token;
-          const response = await fetch(
-            `${import.meta.env.VITE_BASE_API_URL}/testimonials/has-testimonial`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-          const data = await response.json();
-          if (!data.hasTestimonial) {
-            setTimeout(() => {
-              setIsTestimonialModalOpen(true);
-            }, 60000); // Open modal after 60 seconds (1 minute)
-          }
-        } catch (error) {
-          console.error("Failed to check testimonial status:", error);
-        }
-      }
-    };
-
-    checkTestimonial();
+    if (isAuthenticated) {
+      useTestimonialsStore.getState().checkHasTestimonial();
+    }
   }, [isAuthenticated]);
+
+  useEffect(() => {
+    const unsubscribe = useTestimonialsStore.subscribe((state) => {
+      if (!state.hasTestimonial && state.hasTestimonialChecked) {
+        const timer = setTimeout(() => {
+          setIsTestimonialModalOpen(true);
+        }, 60000); // Open modal after 60 seconds (1 minute)
+        return () => clearTimeout(timer);
+      }
+    });
+
+    return unsubscribe;
+  }, []);
 
   if (loading || !results) {
     return <ResultsSkeleton />;
@@ -53,8 +45,8 @@ const ResultsPage = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Professional Header */}
-      <div className="text-center mt-12 mb-8">
-        <div className="container mx-auto px-6 py-8">
+      <div className="text-center mt-12 mb-4">
+        <div className="container mx-auto px-6 pt-8 pb-4">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-extrabold text-foreground mb-2">
               Candidate Screening Results
@@ -68,7 +60,7 @@ const ResultsPage = () => {
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-6 py-12">
+      <div className="container mx-auto px-6 pb-12 pt-6">
         <div className="max-w-6xl mx-auto">
           <ResultsDisplay loading={loading} results={results} />
         </div>

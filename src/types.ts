@@ -1,38 +1,24 @@
-export interface JobHistory {
-  company: string;
-  role: string;
-  duration: string;
-}
-
-export interface Project {
-  name: string;
-  description: string;
-}
-
-export interface Candidate {
-  name: string;
-  email: string;
-  contact: string;
-  education: string;
-  skills: string;
-  jobHistory: string;
-  projects: string;
-  jdAlignment: string;
-  score: number;
+export interface ScreeningResult {
+  candidate_name: string;
+  final_score: number;
+  confidence_score: number;
+  recommendation: "Yes" | "No" | "Maybe";
   justification: string;
-  recommendation: string;
-  keyObservations: string;
-  confidenceScore: string;
+  key_strengths: string[];
+  key_gaps: string[];
+  hard_blockers: string[];
+  email_address: string;
+  contact_number: string;
 }
 
 export interface ApiResponse {
   success: boolean;
   statusCode: number;
   message: string;
-  data: Candidate; // Assuming 'data' always contains a single Candidate object
+  data: ScreeningResult[];
 }
 
-export type Results = Candidate; // Changed from Candidate[] to Candidate
+export type Results = ScreeningResult[];
 
 export type Testimonial = {
   _id: string;

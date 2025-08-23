@@ -7,6 +7,7 @@ interface TestimonialsState {
   isLoading: boolean;
   error: string | null;
   hasTestimonial: boolean;
+  hasTestimonialChecked: boolean;
   fetchApprovedTestimonials: () => Promise<void>;
   checkHasTestimonial: () => Promise<void>;
 }
@@ -16,6 +17,7 @@ export const useTestimonialsStore = create<TestimonialsState>((set, get) => ({
   isLoading: false,
   error: null,
   hasTestimonial: false,
+  hasTestimonialChecked: false,
   fetchApprovedTestimonials: async () => {
     if (get().isLoading) return;
     set({ isLoading: true, error: null });
@@ -32,7 +34,9 @@ export const useTestimonialsStore = create<TestimonialsState>((set, get) => ({
   },
   checkHasTestimonial: async () => {
     const token = useAuthStore.getState().token;
-    if (!token) return;
+    if (!token || get().hasTestimonialChecked) return;
+
+    set({ hasTestimonialChecked: true });
 
     try {
       const response = await fetch(`${import.meta.env.VITE_BASE_API_URL}/testimonials/has-testimonial`, {
@@ -47,6 +51,7 @@ export const useTestimonialsStore = create<TestimonialsState>((set, get) => ({
       set({ hasTestimonial: data.hasTestimonial });
     } catch (error) {
       console.error("Failed to check testimonial status:", error);
+      set({ hasTestimonialChecked: false });
     }
   },
 }));

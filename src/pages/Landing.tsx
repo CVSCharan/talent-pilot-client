@@ -4,6 +4,7 @@ import { JobInputForm } from "../components/landing/JobInputForm";
 import { TourGuide } from "../components/landing/TourGuide";
 import { useResultsStore } from "../store/results-store";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { useFormDataStore } from "../store/form-data-store";
 import useAuthStore from "../store/auth-store";
@@ -56,6 +57,10 @@ const Landing = () => {
   const handleSubmit = async (event?: React.FormEvent) => {
     event?.preventDefault();
 
+    if (loading) {
+      return;
+    }
+
     if (!isAuthenticated) {
       useFormDataStore.getState().setFormData({
         ...formData,
@@ -83,9 +88,11 @@ const Landing = () => {
       }
 
       const response = await fetch(`${import.meta.env.VITE_BASE_API_URL}/n8n`, {
+        // const response = await fetch(
+        //   `http://localhost:5678/webhook-test/e56c9327-18f7-455e-8a7a-f777f6c98b86`,
+        // {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: submissionData,
@@ -206,9 +213,16 @@ const Landing = () => {
                 handleSubmit();
                 clearFormData();
               }}
-              disabled={!resume}
+              disabled={loading || !resume}
             >
-              Submit Analysis
+              {loading ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <span className="ml-2">Analyzing...</span>
+                </>
+              ) : (
+                "Submit Analysis"
+              )}
             </Button>
           </div>
         </DialogContent>
