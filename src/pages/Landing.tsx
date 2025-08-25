@@ -17,6 +17,7 @@ import {
   DialogTitle,
 } from "../components/ui/dialog";
 import { Card, CardContent } from "../components/ui/card";
+import { jobInputSchema } from "../schemas/jobInputSchema";
 import type { ApiResponse } from "../types";
 
 const Landing = () => {
@@ -70,6 +71,15 @@ const Landing = () => {
       return;
     }
 
+    const validationResult = jobInputSchema.safeParse(formData);
+
+    if (!validationResult.success) {
+      validationResult.error.errors.forEach((error) => {
+        toast.error(error.message);
+      });
+      return;
+    }
+
     setLoading(true);
     toast.info("Starting AI analysis...", {
       description: "Please wait while we analyze the resumes.",
@@ -87,16 +97,17 @@ const Landing = () => {
         submissionData.append("document", resume);
       }
 
-      const response = await fetch(`${import.meta.env.VITE_BASE_API_URL}/n8n`, {
-        // const response = await fetch(
-        //   `http://localhost:5678/webhook-test/e56c9327-18f7-455e-8a7a-f777f6c98b86`,
-        // {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: submissionData,
-      });
+      // const response = await fetch(`${import.meta.env.VITE_BASE_API_URL}/n8n`, {
+      const response = await fetch(
+        `http://localhost:5678/webhook-test/505c5ad8-c545-48cd-8ef0-e779a6899391`,
+        {
+          method: "POST",
+          // headers: {
+          //   Authorization: `Bearer ${token}`,
+          // },
+          body: submissionData,
+        }
+      );
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -106,7 +117,6 @@ const Landing = () => {
       }
 
       const apiResponse: ApiResponse = await response.json();
-      console.log("Response from API:", apiResponse);
 
       setResults(apiResponse.data);
       toast.success("Analysis complete!", {
@@ -115,12 +125,29 @@ const Landing = () => {
       navigate("/results");
       clearFormData();
     } catch (error: unknown) {
-      console.error("Analysis failed:", error);
+      let errorMessage =
+        "An unexpected error occurred. Please try again later.";
+      if (error instanceof Error) {
+        if (error.message.includes("Server responded with")) {
+          const status = parseInt(error.message.split(" ")[3], 10);
+          if (status === 400) {
+            errorMessage =
+              "There was a problem with your submission. Please check your input and try again.";
+          } else if (status === 401) {
+            errorMessage =
+              "You are not authorized to perform this action. Please log in again.";
+          } else if (status === 500) {
+            errorMessage =
+              "There was a problem with our server. Please try again later.";
+          }
+        } else if (error.message.includes("fetch")) {
+          errorMessage =
+            "Could not connect to the server. Please check your internet connection.";
+        }
+      }
+
       toast.error("Analysis failed", {
-        description:
-          error instanceof Error
-            ? error.message
-            : "An unexpected error occurred. Please try again later.",
+        description: errorMessage,
       });
     } finally {
       setLoading(false);

@@ -6,6 +6,7 @@ import { Input } from "../ui/input";
 import useAuthStore from "../../store/auth-store";
 import { AuthPromptModal } from "../layout/AuthPromptModal";
 import { useState } from "react";
+import { toast } from "../lib/sonner-toast";
 
 interface JobInputFormProps {
   formData: any;
@@ -29,6 +30,10 @@ export function JobInputForm({
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!resume) {
+      toast.error("Please upload a resume to continue.");
+      return;
+    }
     if (!isAuthenticated) {
       setIsAuthModalOpen(true);
     } else {
@@ -149,7 +154,6 @@ export function JobInputForm({
             accept=".pdf"
             className="hidden"
             onChange={handleFileChange}
-            required
           />
           <div className="bg-primary/10 p-3 rounded-full mx-auto mb-4 inline-flex">
             <Upload className="h-7 w-7 text-primary" />
