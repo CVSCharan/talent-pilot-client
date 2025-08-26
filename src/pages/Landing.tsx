@@ -97,17 +97,16 @@ const Landing = () => {
         submissionData.append("document", resume);
       }
 
-      // const response = await fetch(`${import.meta.env.VITE_BASE_API_URL}/n8n`, {
-      const response = await fetch(
-        `http://localhost:5678/webhook-test/505c5ad8-c545-48cd-8ef0-e779a6899391`,
-        {
-          method: "POST",
-          // headers: {
-          //   Authorization: `Bearer ${token}`,
-          // },
-          body: submissionData,
-        }
-      );
+      const response = await fetch(`${import.meta.env.VITE_BASE_API_URL}/n8n`, {
+        // const response = await fetch(
+        //   `http://localhost:5678/webhook-test/505c5ad8-c545-48cd-8ef0-e779a6899391`,
+        //   {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: submissionData,
+      });
 
       if (!response.ok) {
         const errorText = await response.text();
