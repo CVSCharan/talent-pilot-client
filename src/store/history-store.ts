@@ -1,9 +1,9 @@
 import { create } from 'zustand';
-import type { ScreeningResult } from '../types';
+import type { IN8nUserResponse } from '../types';
 import useAuthStore from './auth-store';
 
 interface HistoryState {
-  history: ScreeningResult[];
+  history: IN8nUserResponse[];
   loading: boolean;
   fetchHistory: () => Promise<void>;
 }
@@ -32,7 +32,7 @@ export const useHistoryStore = create<HistoryState>((set) => ({
       }
       const data = await response.json();
       // The API returns an array of arrays of ScreeningResult
-      const historyData = data.flat().filter((item: any): item is ScreeningResult => !!item);
+      const historyData = data.flat().filter((item: any): item is IN8nUserResponse => !!item);
       set({ history: historyData || [], loading: false });
     } catch (error) {
       console.error(error);

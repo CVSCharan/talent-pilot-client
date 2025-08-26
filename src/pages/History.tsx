@@ -12,7 +12,7 @@ import {
   CardTitle,
 } from "../components/ui/card";
 import { TrendingUp } from "lucide-react";
-import type { ScreeningResult } from "../types";
+import type { IN8nUserResponse } from "../types";
 import { Skeleton } from "../components/ui/skeleton";
 import useAuthStore from "../store/auth-store";
 
@@ -38,7 +38,7 @@ const HistoryPage = () => {
     }
   }, [isAuthenticated, fetchHistory]);
 
-  const handleViewResult = (result: ScreeningResult) => {
+  const handleViewResult = (result: IN8nUserResponse) => {
     setResults([result]);
     navigate("/results");
   };
@@ -124,14 +124,14 @@ const HistoryPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12">
             {history.map((result) => (
               <Card
-                key={result.email_address}
+                key={`${result.candidateResume.candidateDetails["Candidate Email"]}-${result.createdAt}`}
                 className="shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col"
               >
                 <CardHeader>
                   <CardTitle className="text-xl sm:text-2xl">
-                    {result.candidate_name}
+                    {result.candidateResume.candidateDetails["Candidate Name"]}
                   </CardTitle>
-                  <CardDescription>{result.recommendation}</CardDescription>
+                  <CardDescription>{result.results.recommendation}</CardDescription>
                 </CardHeader>
                 <CardContent className="flex-grow">
                   <div className="space-y-4">
@@ -140,7 +140,7 @@ const HistoryPage = () => {
                         Justification
                       </h4>
                       <p className="font-semibold">
-                        {result.justification.slice(0, 100)}...
+                        {result.results.justification.slice(0, 100)}...
                       </p>
                     </div>
                     <div>
@@ -148,7 +148,7 @@ const HistoryPage = () => {
                         Key Strengths
                       </h4>
                       <div className="flex flex-wrap gap-2">
-                        {result.key_strengths
+                        {result.results.key_strengths
                           .slice(0, 5)
                           .map((skill: string) => (
                             <span
@@ -168,7 +168,7 @@ const HistoryPage = () => {
                       Final Score
                     </p>
                     <p className="text-2xl sm:text-3xl font-bold">
-                      {result.final_score}
+                      {result.results.final_score}
                     </p>
                   </div>
                   <Button

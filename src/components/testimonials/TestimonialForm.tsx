@@ -42,7 +42,7 @@ export const TestimonialForm = () => {
   }, [isAuthenticated, userProfile, form]);
 
   const onSubmit = async (values: z.infer<typeof testimonialSchema>) => {
-    let postData: {
+    const postData: {
       authorName: string; // Always send authorName
       designation: string;
       rating: number;

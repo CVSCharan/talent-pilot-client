@@ -38,9 +38,13 @@ const useAuthStore = create<AuthState>()(
       setError: (error: string | null) => set({ error }),
 
       initializeAuth: async () => {
-        const currentToken = get().token;
-        if (currentToken) {
-          await get().setTokenAndFetchUser(currentToken);
+        const { token, user, isAuthenticated } = get();
+        if (token && user && isAuthenticated) {
+          // User data already exists and is authenticated, no need to re-fetch
+          return;
+        }
+        if (token) {
+          await get().setTokenAndFetchUser(token);
         }
       },
 

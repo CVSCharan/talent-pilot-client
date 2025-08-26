@@ -1,24 +1,89 @@
-export interface ScreeningResult {
-  candidate_name: string;
-  final_score: number;
-  confidence_score: number;
-  recommendation: "Yes" | "No" | "Maybe";
-  justification: string;
-  key_strengths: string[];
-  key_gaps: string[];
-  hard_blockers: string[];
-  email_address: string;
-  contact_number: string;
+export interface IUser {
+  _id: string;
+  // other user fields
+}
+
+export interface IN8nUserResponse {
+  user: IUser['_id'];
+  jdContext: {
+    jobDescription: string;
+    jobDetails: {
+      positionTitle: string;
+      requiredSkills: string[];
+      coreResponsibilities: string[];
+      seniorityLevel: string;
+      preferredLocation: string;
+      minimumExperience: string;
+      educationRequirement: string;
+      bonusSkills: string[];
+    };
+  };
+  candidateResume: {
+    candidateDetails: {
+      "Candidate Name": string;
+      "Candidate Email": string;
+      "Candidate Contact": string;
+      Education: {
+        Degree: string;
+        Institution: string;
+        "Graduation Year": string;
+      }[];
+      "Technical Skills": {
+        "Programming Languages": string[];
+        Frameworks: string[];
+        Databases: string[];
+        Tools: string[];
+        Methodologies: string[];
+      };
+      Experience: {
+        "Job Title": string;
+        Company: string;
+        "Start Date": string;
+        "End Date": string;
+        Responsibilities: string[];
+        Achievements: string[];
+      }[];
+      Projects: {
+        "Project Name": string;
+        Objective: string;
+        "Technologies Used": string[];
+        Outcome: string;
+      }[];
+      "Certifications & Training": {
+        Certification: string;
+        "Issuing Organization": string;
+        Year: string;
+      }[];
+      "Other Notable Information": {
+        Awards: string[];
+        Publications: string[];
+        "Volunteer Work": string[];
+        "Open Source Contributions": string[];
+        Languages: string[];
+      };
+      "Resume Summary": string;
+    };
+  };
+  results: {
+    final_score: string;
+    confidence_score: string;
+    recommendation: string;
+    justification: string;
+    key_strengths: string[];
+    key_gaps: string[];
+    hard_blockers: string[];
+  };
+  createdAt: Date;
 }
 
 export interface ApiResponse {
   success: boolean;
   statusCode: number;
   message: string;
-  data: ScreeningResult[];
+  data: IN8nUserResponse[];
 }
 
-export type Results = ScreeningResult[];
+export type Results = IN8nUserResponse[];
 
 export type Testimonial = {
   _id: string;
@@ -41,7 +106,7 @@ export type FormData = {
   minimumExperience: string;
   educationRequirement: string;
   bonusSkills: string;
-  pendingSubmission: boolean;
+  pendingSubmission?: boolean;
 };
 
 export type UserProfile = {

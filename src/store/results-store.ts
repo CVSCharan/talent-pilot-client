@@ -1,16 +1,20 @@
 import { create } from 'zustand';
-import type { ScreeningResult } from '../types';
+import type { IN8nUserResponse } from '../types';
 
 interface ResultsState {
-  results: ScreeningResult[] | null;
+  results: IN8nUserResponse[] | null;
   loading: boolean;
-  setResults: (results: ScreeningResult[] | null) => void;
+  error: string | null;
+  setResults: (results: IN8nUserResponse[] | null) => void;
   setLoading: (loading: boolean) => void;
+  setError: (error: string | null) => void;
 }
 
 export const useResultsStore = create<ResultsState>((set) => ({
   results: null,
   loading: false,
-  setResults: (results) => set({ results }),
+  error: null,
+  setResults: (results) => set({ results, error: null }),
   setLoading: (loading) => set({ loading }),
+  setError: (error) => set({ error, results: null, loading: false }),
 }));
