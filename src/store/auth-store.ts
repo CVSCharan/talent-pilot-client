@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { useUserProfileStore } from "../hooks/use-user-profile";
+import api from "../lib/api";
 
 interface User {
   id: string;
@@ -51,7 +52,7 @@ const useAuthStore = create<AuthState>()(
       login: async (email, password) => {
         set({ isLoading: true, error: null });
         try {
-          const response = await fetch(`${import.meta.env.VITE_BASE_API_URL}/auth/login`, {
+          const response = await api.fetch(`${import.meta.env.VITE_BASE_API_URL}/auth/login`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -87,7 +88,7 @@ const useAuthStore = create<AuthState>()(
       signup: async (email, password) => {
         set({ isLoading: true, error: null });
         try {
-          const response = await fetch(
+          const response = await api.fetch(
             `${import.meta.env.VITE_BASE_API_URL}/auth/signup`,
             {
               method: "POST",
@@ -129,7 +130,7 @@ const useAuthStore = create<AuthState>()(
         try {
           set({ token, isAuthenticated: true });
 
-          const response = await fetch(`${import.meta.env.VITE_BASE_API_URL}/auth/me`, {
+          const response = await api.fetch(`${import.meta.env.VITE_BASE_API_URL}/auth/me`, {
             headers: {
               "Authorization": `Bearer ${token}`,
             },
@@ -161,7 +162,7 @@ const useAuthStore = create<AuthState>()(
 
         if (currentToken) {
           try {
-            await fetch(`${import.meta.env.VITE_BASE_API_URL}/auth/logout`, {
+            await api.fetch(`${import.meta.env.VITE_BASE_API_URL}/auth/logout`, {
               method: "POST", // Or DELETE, depending on backend
               headers: {
                 "Authorization": `Bearer ${currentToken}`,

@@ -13,6 +13,7 @@ import GAuthSuccess from "./pages/GAuthSuccess";
 import TestimonialsPage from "./pages/Testimonials";
 import History from "./pages/History";
 import NotFound from "./pages/NotFound";
+import RequireAuth from "./components/layout/RequireAuth";
 
 function App() {
   const queryClient = new QueryClient();
@@ -23,7 +24,10 @@ function App() {
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/results" element={<Results />} />
+            <Route element={<RequireAuth />}>
+              <Route path="/results" element={<Results />} />
+              <Route path="/history" element={<History />} />
+            </Route>
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/auth/success" element={<GAuthSuccess />} />

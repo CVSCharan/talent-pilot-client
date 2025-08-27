@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import type { Testimonial } from "../types";
 import useAuthStore from "./auth-store";
+import api from "../lib/api";
 
 interface TestimonialsState {
   testimonials: Testimonial[];
@@ -39,7 +40,7 @@ export const useTestimonialsStore = create<TestimonialsState>((set, get) => ({
     set({ hasTestimonialChecked: true });
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_BASE_API_URL}/testimonials/has-testimonial`, {
+      const response = await api.fetch(`${import.meta.env.VITE_BASE_API_URL}/testimonials/has-testimonial`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

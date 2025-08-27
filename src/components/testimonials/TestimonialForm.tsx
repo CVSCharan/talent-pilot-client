@@ -19,6 +19,7 @@ import { useUserProfileStore } from "../../hooks/use-user-profile";
 import useAuthStore from "../../store/auth-store";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { testimonialSchema } from "../../schemas/testimonialSchema";
+import api from "../../lib/api";
 
 export const TestimonialForm = () => {
   const { userProfile } = useUserProfileStore();
@@ -63,7 +64,7 @@ export const TestimonialForm = () => {
     console.log("user:", user);
 
     try {
-      const response = await fetch(
+      const response = await api.fetch(
         `${import.meta.env.VITE_BASE_API_URL}/testimonials`,
         {
           method: "POST",

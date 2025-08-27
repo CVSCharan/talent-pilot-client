@@ -19,10 +19,12 @@ import {
 import { Card, CardContent } from "../components/ui/card";
 import { jobInputSchema } from "../schemas/jobInputSchema";
 import type { ApiResponse } from "../types";
+import { RateLimitModal } from "../components/landing/RateLimitModal";
+import api from "../lib/api";
 
 const Landing = () => {
   const navigate = useNavigate();
-  const { setResults, setLoading, loading } = useResultsStore();
+  const { setResults, setLoading, loading, setError } = useResultsStore();
   const storedFormData = useFormDataStore((state) => state.formData);
   const clearFormData = useFormDataStore((state) => state.clearFormData);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -48,6 +50,7 @@ const Landing = () => {
   const [isTourOpen, setIsTourOpen] = useState(false);
   const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
   const [showResumeReuploadModal, setShowResumeReuploadModal] = useState(false);
+  const [isRateLimitModalOpen, setIsRateLimitModalOpen] = useState(false);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -97,10 +100,7 @@ const Landing = () => {
         submissionData.append("document", resume);
       }
 
-      const response = await fetch(`${import.meta.env.VITE_BASE_API_URL}/n8n`, {
-        // const response = await fetch(
-        //   `http://localhost:5678/webhook-test/505c5ad8-c545-48cd-8ef0-e779a6899391`,
-        //   {
+      const response = await api.fetch(`${import.meta.env.VITE_BASE_API_URL}/n8n`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -126,10 +126,15 @@ const Landing = () => {
     } catch (error: unknown) {
       let errorMessage =
         "An unexpected error occurred. Please try again later.";
+      let shouldShowToast = true;
+
       if (error instanceof Error) {
         if (error.message.includes("Server responded with")) {
           const status = parseInt(error.message.split(" ")[3], 10);
-          if (status === 400) {
+          if (status === 429) {
+            setIsRateLimitModalOpen(true);
+            shouldShowToast = false;
+          } else if (status === 400) {
             errorMessage =
               "There was a problem with your submission. Please check your input and try again.";
           } else if (status === 401) {
@@ -145,11 +150,12 @@ const Landing = () => {
         }
       }
 
-      toast.error("Analysis failed", {
-        description: errorMessage,
-      });
-    } finally {
-      setLoading(false);
+      if (shouldShowToast) {
+        toast.error("Analysis failed", {
+          description: errorMessage,
+        });
+      }
+      setError(errorMessage);
     }
   };
 
@@ -167,6 +173,7 @@ const Landing = () => {
   return (
     <>
       <TourGuide isOpen={isTourOpen} onClose={() => setIsTourOpen(false)} />
+      <RateLimitModal isOpen={isRateLimitModalOpen} onClose={() => setIsRateLimitModalOpen(false)} />
       <div className="container mx-auto px-4 sm:px-6 flex-grow overflow-auto py-8 pt-12">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">

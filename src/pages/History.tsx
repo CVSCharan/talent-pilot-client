@@ -27,7 +27,7 @@ const HistoryPage = () => {
     if (!loading && history.length === 0) {
       navigate("/");
     }
-  }, [navigate]);
+  }, [navigate, loading, history.length]);
 
   useEffect(() => {
     if (isAuthenticated && effectRan.current === false) {
@@ -45,39 +45,53 @@ const HistoryPage = () => {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12">
-          {Array.from({ length: 2 }).map((_, index) => (
-            <Card key={index} className="shadow-lg flex flex-col">
-              <CardHeader>
-                <Skeleton className="h-8 w-3/4" />
-                <Skeleton className="h-4 w-1/2 mt-2" />
-              </CardHeader>
-              <CardContent className="flex-grow">
-                <div className="space-y-4">
-                  <div>
-                    <Skeleton className="h-4 w-1/4 mb-2" />
-                    <Skeleton className="h-6 w-full" />
-                  </div>
-                  <div>
-                    <Skeleton className="h-4 w-1/4 mb-2" />
-                    <div className="flex flex-wrap gap-2">
-                      <Skeleton className="h-6 w-16" />
-                      <Skeleton className="h-6 w-20" />
-                      <Skeleton className="h-6 w-12" />
+      <div className="bg-background">
+        <div className="container mx-auto px-6 py-12">
+          <div className="text-center mt-12 mb-8">
+            <div className="container mx-auto px-6 py-8">
+              <div className="text-center">
+                <h1 className="text-4xl md:text-5xl font-extrabold text-foreground mb-2">
+                  Screening History
+                </h1>
+                <p className="text-md md:text-lg text-muted-foreground max-w-3xl mx-auto">
+                  A log of all previously screened candidates.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 mx-auto px-6 py-12">
+            {Array.from({ length: 2 }).map((_, index) => (
+              <Card key={index} className="shadow-lg flex flex-col">
+                <CardHeader>
+                  <Skeleton className="h-8 w-3/4" />
+                  <Skeleton className="h-4 w-1/2 mt-2" />
+                </CardHeader>
+                <CardContent className="flex-grow">
+                  <div className="space-y-4">
+                    <div>
+                      <Skeleton className="h-4 w-1/4 mb-2" />
+                      <Skeleton className="h-6 w-full" />
+                    </div>
+                    <div>
+                      <Skeleton className="h-4 w-1/4 mb-2" />
+                      <div className="flex flex-wrap gap-2">
+                        <Skeleton className="h-6 w-16" />
+                        <Skeleton className="h-6 w-20" />
+                        <Skeleton className="h-6 w-12" />
+                      </div>
                     </div>
                   </div>
-                </div>
-              </CardContent>
-              <CardFooter className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sm:gap-0 bg-muted/50 p-4">
-                <div>
-                  <Skeleton className="h-4 w-20 mb-2" />
-                  <Skeleton className="h-10 w-16" />
-                </div>
-                <Skeleton className="h-12 w-32" />
-              </CardFooter>
-            </Card>
-          ))}
+                </CardContent>
+                <CardFooter className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sm:gap-0 bg-muted/50 p-4">
+                  <div>
+                    <Skeleton className="h-4 w-20 mb-2" />
+                    <Skeleton className="h-10 w-16" />
+                  </div>
+                  <Skeleton className="h-12 w-32" />
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
         </div>
       </div>
     );
@@ -122,16 +136,18 @@ const HistoryPage = () => {
       <div className="container mx-auto px-6 py-12">
         <div className="flex justify-center">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12">
-            {history.map((result) => (
+            {history.map((result, index) => (
               <Card
-                key={`${result.candidateResume.candidateDetails["Candidate Email"]}-${result.createdAt}`}
+                key={`${result.candidateResume?.candidateDetails?.["Candidate Email"] || index}`}
                 className="shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col"
               >
                 <CardHeader>
                   <CardTitle className="text-xl sm:text-2xl">
-                    {result.candidateResume.candidateDetails["Candidate Name"]}
+                    {result.candidateResume?.candidateDetails?.["Candidate Name"] || 'Unknown Candidate'}
                   </CardTitle>
-                  <CardDescription>{result.results.recommendation}</CardDescription>
+                  <CardDescription>
+                    {result.results?.recommendation || 'No recommendation'}
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="flex-grow">
                   <div className="space-y-4">
@@ -140,7 +156,8 @@ const HistoryPage = () => {
                         Justification
                       </h4>
                       <p className="font-semibold">
-                        {result.results.justification.slice(0, 100)}...
+                        {result.results?.justification?.slice(0, 100) || "No justification provided."}
+                        {result.results?.justification && result.results.justification.length > 100 ? "..." : ""}
                       </p>
                     </div>
                     <div>
@@ -148,7 +165,7 @@ const HistoryPage = () => {
                         Key Strengths
                       </h4>
                       <div className="flex flex-wrap gap-2">
-                        {result.results.key_strengths
+                        {(result.results?.key_strengths || [])
                           .slice(0, 5)
                           .map((skill: string) => (
                             <span
@@ -168,7 +185,7 @@ const HistoryPage = () => {
                       Final Score
                     </p>
                     <p className="text-2xl sm:text-3xl font-bold">
-                      {result.results.final_score}
+                      {result.results?.final_score || 'N/A'}
                     </p>
                   </div>
                   <Button

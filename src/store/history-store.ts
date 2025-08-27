@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import type { IN8nUserResponse } from '../types';
 import useAuthStore from './auth-store';
+import api from '../lib/api';
 
 interface HistoryState {
   history: IN8nUserResponse[];
@@ -22,7 +23,7 @@ export const useHistoryStore = create<HistoryState>((set) => ({
     }
 
     try {
-      const response = await fetch(`${VITE_BASE_API_URL}/n8n/responses`, {
+      const response = await api.fetch(`${VITE_BASE_API_URL}/n8n/responses`, {
         headers: {
           "Authorization": `Bearer ${token}`,
         },

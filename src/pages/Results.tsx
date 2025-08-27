@@ -14,7 +14,7 @@ const ResultsPage = () => {
   const [isTestimonialModalOpen, setIsTestimonialModalOpen] = useState(false);
 
   useEffect(() => {
-    if (!loading && !results) {
+    if (!loading && results === null) {
       navigate("/");
     }
   }, [results, loading, navigate]);
@@ -62,7 +62,7 @@ const ResultsPage = () => {
       {/* Main Content */}
       <div className="container mx-auto px-6 pb-12 pt-6">
         <div className="max-w-6xl mx-auto">
-          <ResultsDisplay loading={loading} results={results} />
+          <ResultsDisplay results={results} />
         </div>
       </div>
       <TestimonialModal

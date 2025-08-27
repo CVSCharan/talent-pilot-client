@@ -14,7 +14,7 @@ export const useResultsStore = create<ResultsState>((set) => ({
   results: null,
   loading: false,
   error: null,
-  setResults: (results) => set({ results, error: null }),
+  setResults: (results) => set({ results, loading: false, error: null }),
   setLoading: (loading) => set({ loading }),
   setError: (error) => set({ error, results: null, loading: false }),
 }));
