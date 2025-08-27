@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import { Toaster } from "./components/ui/sonner";
 
 import Layout from "./components/layout/Layout";
 import Landing from "./pages/Landing";
@@ -36,6 +36,7 @@ function App() {
             <Route path="/history" element={<History />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <Toaster />
         </Layout>
       </BrowserRouter>
     </QueryClientProvider>
