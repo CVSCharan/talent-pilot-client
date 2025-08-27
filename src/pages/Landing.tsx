@@ -1,55 +1,35 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { JobInputForm } from "../components/landing/JobInputForm";
 import { TourGuide } from "../components/landing/TourGuide";
 import { useResultsStore } from "../store/results-store";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
-import { Button } from "../components/ui/button";
 import { useFormDataStore } from "../store/form-data-store";
 import useAuthStore from "../store/auth-store";
-import { ResumeReuploadPrompt } from "../components/landing/ResumeReuploadPrompt";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "../components/ui/dialog";
 import { Card, CardContent } from "../components/ui/card";
 import { jobInputSchema } from "../schemas/jobInputSchema";
 import type { ApiResponse } from "../types";
 import { RateLimitModal } from "../components/landing/RateLimitModal";
 import api from "../lib/api";
+import { Button } from "../components/ui/button";
 
 const Landing = () => {
   const navigate = useNavigate();
-  const { setResults, setLoading, loading, setError } = useResultsStore();
-  const storedFormData = useFormDataStore((state) => state.formData);
-  const clearFormData = useFormDataStore((state) => state.clearFormData);
+  const { setResults, setLoading, loading, setError, setIsRedirecting } =
+    useResultsStore();
+  const {
+    formData,
+    resume,
+    setResume,
+    setFormField,
+    clearFormData,
+    setEntireFormData,
+  } = useFormDataStore();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const token = useAuthStore((state) => state.token);
 
-  const initialFormData = {
-    jobTitle: "",
-    requiredSkills: "",
-    coreResponsibilities: "",
-    seniorityLevel: "",
-    preferredLocation: "",
-    minimumExperience: "",
-    educationRequirement: "",
-    bonusSkills: "",
-  };
-
-  const [formData, setFormData] = useState({
-    ...initialFormData,
-    ...storedFormData,
-  });
-
-  const [resume, setResume] = useState<File | null>(null);
   const [isTourOpen, setIsTourOpen] = useState(false);
-  const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
-  const [showResumeReuploadModal, setShowResumeReuploadModal] = useState(false);
   const [isRateLimitModalOpen, setIsRateLimitModalOpen] = useState(false);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,10 +46,7 @@ const Landing = () => {
     }
 
     if (!isAuthenticated) {
-      useFormDataStore.getState().setFormData({
-        ...formData,
-        pendingSubmission: true,
-      });
+      setEntireFormData({ ...formData, pendingSubmission: true });
       navigate("/login");
       return;
     }
@@ -100,13 +77,16 @@ const Landing = () => {
         submissionData.append("document", resume);
       }
 
-      const response = await api.fetch(`${import.meta.env.VITE_BASE_API_URL}/n8n`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: submissionData,
-      });
+      const response = await api.fetch(
+        `${import.meta.env.VITE_BASE_API_URL}/n8n`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: submissionData,
+        }
+      );
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -118,6 +98,8 @@ const Landing = () => {
       const apiResponse: ApiResponse = await response.json();
 
       setResults(apiResponse.data);
+      setLoading(false);
+      setIsRedirecting(true);
       toast.success("Analysis complete!", {
         description: "Redirecting to the results page...",
       });
@@ -156,24 +138,28 @@ const Landing = () => {
         });
       }
       setError(errorMessage);
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (
-      isAuthenticated &&
-      storedFormData?.pendingSubmission &&
-      !hasAttemptedSubmit
-    ) {
-      setShowResumeReuploadModal(true);
-      setHasAttemptedSubmit(true);
+    if (isAuthenticated && formData.pendingSubmission) {
+      if (!resume) {
+        toast.error("Please upload a resume to continue.");
+        setEntireFormData({ ...formData, pendingSubmission: false });
+        return;
+      }
+      handleSubmit();
     }
-  }, [isAuthenticated, storedFormData?.pendingSubmission, hasAttemptedSubmit]);
+  }, [isAuthenticated, formData.pendingSubmission]);
 
   return (
     <>
       <TourGuide isOpen={isTourOpen} onClose={() => setIsTourOpen(false)} />
-      <RateLimitModal isOpen={isRateLimitModalOpen} onClose={() => setIsRateLimitModalOpen(false)} />
+      <RateLimitModal
+        isOpen={isRateLimitModalOpen}
+        onClose={() => setIsRateLimitModalOpen(false)}
+      />
       <div className="container mx-auto px-4 sm:px-6 flex-grow overflow-auto py-8 pt-12">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">
@@ -194,17 +180,9 @@ const Landing = () => {
         </div>
         <Card className="max-w-4xl mx-auto shadow-lg">
           <CardContent className="p-8">
-            {isAuthenticated &&
-              storedFormData?.jobTitle &&
-              !storedFormData?.pendingSubmission && (
-                <ResumeReuploadPrompt
-                  handleFileChange={handleFileChange}
-                  resume={resume}
-                />
-              )}
             <JobInputForm
               formData={formData}
-              setFormData={setFormData}
+              setFormData={setFormField}
               resume={resume}
               handleFileChange={handleFileChange}
               handleSubmit={handleSubmit}
@@ -213,53 +191,6 @@ const Landing = () => {
           </CardContent>
         </Card>
       </div>
-
-      {/* Resume Re-upload Modal */}
-      <Dialog
-        open={showResumeReuploadModal}
-        onOpenChange={setShowResumeReuploadModal}
-      >
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Re-upload Resumes</DialogTitle>
-            <DialogDescription>
-              Please re-upload your resumes to complete the analysis.
-            </DialogDescription>
-          </DialogHeader>
-          <ResumeReuploadPrompt
-            handleFileChange={handleFileChange}
-            resume={resume}
-          />
-          <div className="flex justify-end space-x-2 mt-4">
-            <Button
-              onClick={() => {
-                setShowResumeReuploadModal(false);
-                clearFormData();
-              }}
-              variant="outline"
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={() => {
-                setShowResumeReuploadModal(false);
-                handleSubmit();
-                clearFormData();
-              }}
-              disabled={loading || !resume}
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  <span className="ml-2">Analyzing...</span>
-                </>
-              ) : (
-                "Submit Analysis"
-              )}
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
     </>
   );
 };

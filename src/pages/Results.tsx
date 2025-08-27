@@ -8,16 +8,17 @@ import useAuthStore from "../store/auth-store";
 import { useTestimonialsStore } from "../store/testimonials-store";
 
 const ResultsPage = () => {
-  const { results, loading } = useResultsStore();
+  const { results, loading, isRedirecting, setIsRedirecting } = useResultsStore();
   const { isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
   const [isTestimonialModalOpen, setIsTestimonialModalOpen] = useState(false);
 
   useEffect(() => {
-    if (!loading && results === null) {
+    if (!loading && results === null && !isRedirecting) {
       navigate("/");
     }
-  }, [results, loading, navigate]);
+    setIsRedirecting(false);
+  }, [results, loading, navigate, isRedirecting, setIsRedirecting]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -38,7 +39,7 @@ const ResultsPage = () => {
     return unsubscribe;
   }, []);
 
-  if (loading || !results) {
+  if (isRedirecting || !results) {
     return <ResultsSkeleton />;
   }
 

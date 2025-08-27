@@ -7,16 +7,19 @@
 *   **AI-Powered Screening:** Leverages AI to analyze job descriptions and resumes, providing insights into candidate suitability.
 *   **Job Input Form:** A user-friendly form to submit job details and upload resumes.
 *   **Results Display:** Clear and concise presentation of the AI's screening results.
-*   **User Authentication:** Secure user login and registration.
+*   **User Authentication:** Secure user login and registration with email/password and Google OAuth.
 *   **Responsive Design:** The application is designed to work on various screen sizes.
+*   **Dark Mode:** Includes a theme toggler for light and dark mode.
 
 ## Tech Stack
 
 *   **Frontend:** React, TypeScript, Vite
-*   **Styling:** Tailwind CSS, Radix UI
+*   **Styling:** Tailwind CSS, Radix UI, shadcn/ui
 *   **State Management:** Zustand
-*   **Form Handling:** React Hook Form
+*   **Data Fetching:** React Query
+*   **Form Handling:** React Hook Form, Zod
 *   **Routing:** React Router
+*   **Animation:** Framer Motion
 *   **Linting:** ESLint
 
 ## Getting Started
@@ -41,6 +44,16 @@
     npm install
     ```
 
+### Environment Variables
+
+Create a `.env` file in the root of the project and add the following environment variable:
+
+```
+VITE_BASE_API_URL=http://localhost:3000
+```
+
+You can refer to the `.env.example` file for a template.
+
 ### Running the Application
 
 To run the application in development mode, use the following command:
@@ -61,6 +74,14 @@ npm run build
 
 This will create a `dist` folder with the production-ready files.
 
+## Testing
+
+Currently, there are no automated tests in this project. This is a key area for improvement. Adding a testing framework like Vitest or React Testing Library is highly recommended to ensure the quality and reliability of the application.
+
+## Deployment
+
+This project is configured for deployment on Vercel. The `vercel.json` file contains the necessary configuration for routing.
+
 ## Folder Structure
 
 ```
@@ -75,6 +96,7 @@ This will create a `dist` folder with the production-ready files.
 │   ├── store/
 │   ├── types.ts
 │   └── main.tsx
+├── .env.example
 ├── .gitignore
 ├── index.html
 ├── package.json

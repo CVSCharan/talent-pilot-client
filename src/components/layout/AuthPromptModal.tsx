@@ -25,10 +25,10 @@ export function AuthPromptModal({
   jobDescription, // Renamed from coreResponsibilities for simplicity
 }: AuthPromptModalProps) {
   const navigate = useNavigate();
-  const { setFormData } = useFormDataStore();
+  const { setEntireFormData } = useFormDataStore();
 
   const handleLoginClick = () => {
-    setFormData({
+    setEntireFormData({
       jobTitle,
       requiredSkills: skills,
       coreResponsibilities: jobDescription,

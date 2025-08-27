@@ -3,14 +3,11 @@ import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 import { Input } from "../ui/input";
-import useAuthStore from "../../store/auth-store";
-import { AuthPromptModal } from "../layout/AuthPromptModal";
-import { useState } from "react";
 import { toast } from "../lib/sonner-toast";
 
 interface JobInputFormProps {
   formData: any;
-  setFormData: (data: any) => void;
+  setFormData: (field: any, value: any) => void;
   resume: File | null;
   handleFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: (event: React.FormEvent) => void;
@@ -25,27 +22,20 @@ export function JobInputForm({
   handleSubmit,
   loading,
 }: JobInputFormProps) {
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!resume) {
       toast.error("Please upload a resume to continue.");
       return;
     }
-    if (!isAuthenticated) {
-      setIsAuthModalOpen(true);
-    } else {
-      handleSubmit(e);
-    }
+    handleSubmit(e);
   };
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { id, value } = e.target;
-    setFormData({ ...formData, [id]: value });
+    setFormData(id, value);
   };
 
   return (
@@ -184,14 +174,6 @@ export function JobInputForm({
           )}
         </Button>
       </div>
-
-      <AuthPromptModal
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-        jobTitle={formData.jobTitle}
-        skills={formData.requiredSkills}
-        jobDescription={formData.coreResponsibilities}
-      />
     </form>
   );
 }
