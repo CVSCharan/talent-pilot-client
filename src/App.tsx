@@ -15,6 +15,7 @@ import History from "./pages/History";
 import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
+import ContactUs from "./pages/ContactUs";
 import RequireAuth from "./components/layout/RequireAuth";
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />
             <Route path="*" element={<NotFound />} />
+            <Route path="/contact-us" element={<ContactUs />} />
           </Routes>
           <Toaster />
         </Layout>

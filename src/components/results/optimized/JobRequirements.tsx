@@ -20,7 +20,7 @@ const JobRequirements = memo(({ result }: JobRequirementsProps) => {
       <CardContent className="p-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="space-y-4">
-            <h4 className="font-semibold text-foreground text-lg border-b pb-2">
+            <h4 className="font-semibold text-foreground text-lg pb-2">
               Position Overview
             </h4>
             <div className="space-y-3">
@@ -59,7 +59,7 @@ const JobRequirements = memo(({ result }: JobRequirementsProps) => {
 
           <div className="space-y-6">
             <div>
-              <h4 className="font-semibold text-foreground text-lg border-b pb-2 mb-4">
+              <h4 className="font-semibold text-foreground text-lg pb-2 mb-4">
                 Required Skills
               </h4>
               <div className="flex flex-wrap gap-2">
@@ -74,7 +74,7 @@ const JobRequirements = memo(({ result }: JobRequirementsProps) => {
             {result.jdContext.jobDetails.bonusSkills &&
               result.jdContext.jobDetails.bonusSkills.length > 0 && (
                 <div>
-                  <h4 className="font-semibold text-foreground text-lg border-b pb-2 mb-4">
+                  <h4 className="font-semibold text-foreground text-lg pb-2 mb-4">
                     Bonus Skills
                   </h4>
                   <div className="flex flex-wrap gap-2">
@@ -92,7 +92,7 @@ const JobRequirements = memo(({ result }: JobRequirementsProps) => {
               )}
 
             <div>
-              <h4 className="font-semibold text-foreground text-lg border-b pb-2 mb-4">
+              <h4 className="font-semibold text-foreground text-lg pb-2 mb-4">
                 Key Responsibilities
               </h4>
               <div className="space-y-2">

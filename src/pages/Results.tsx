@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ResultsDisplay } from "../components/results/ResultsDisplay";
-import { ResultsSkeleton } from "../components/results/ResultsSkeleton";
+import { OptimizedResultsDisplay } from "../components/results/optimized/OptimizedResultsDisplay";
+import { OptimizedResultsSkeleton } from "../components/results/optimized/OptimizedResultsSkeleton";
 import { TestimonialModal } from "../components/results/TestimonialModal";
 import { useResultsStore } from "../store/results-store";
 import useAuthStore from "../store/auth-store";
@@ -40,7 +40,7 @@ const ResultsPage = () => {
   }, []);
 
   if (isRedirecting || !results) {
-    return <ResultsSkeleton />;
+    return <OptimizedResultsSkeleton />;
   }
 
   return (
@@ -63,7 +63,7 @@ const ResultsPage = () => {
       {/* Main Content */}
       <div className="container mx-auto px-6 pb-12 pt-6">
         <div className="max-w-6xl mx-auto">
-          <ResultsDisplay results={results} />
+          <OptimizedResultsDisplay results={results} />
         </div>
       </div>
       <TestimonialModal

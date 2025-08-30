@@ -6,54 +6,61 @@ const TermsOfService: FC = () => {
     <div className="container mx-auto px-4 py-8">
       <PageHeader
         title="Terms of Service"
-        description="Please read these terms of service carefully before using our website."
+        description="Last updated: August 30, 2025"
       />
       <div className="prose dark:prose-invert max-w-none">
-        <h2>1. Terms</h2>
+        <h2>1. Agreement to Terms</h2>
         <p>
-          By accessing the website at our URL, you are agreeing to be bound by these terms of service, all applicable laws and regulations, and agree that you are responsible for compliance with any applicable local laws. If you do not agree with any of these terms, you are prohibited from using or accessing this site. The materials contained in this website are protected by applicable copyright and trademark law.
+          By using our Service, you agree to be bound by these Terms. If you do not agree to these Terms, do not use the Service.
         </p>
-        <h2>2. Use License</h2>
+        <h2>2. The Service</h2>
         <p>
-          Permission is granted to temporarily download one copy of the materials (information or software) on our website for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:
+          The Service is an AI-powered tool that screens job candidates based on their resumes and the job descriptions you provide. The Service provides a report with a recommendation, but the ultimate hiring decision is yours.
+        </p>
+        <h2>3. User Accounts</h2>
+        <p>
+          When you create an account with us, you must provide us with information that is accurate, complete, and current at all times. Failure to do so constitutes a breach of the Terms, which may result in immediate termination of your account on our Service.
+        </p>
+        <h2>4. User Conduct</h2>
+        <p>
+          You agree not to use the Service to:
         </p>
         <ul>
-          <li>modify or copy the materials;</li>
-          <li>use the materials for any commercial purpose, or for any public display (commercial or non-commercial);</li>
-          <li>attempt to decompile or reverse engineer any software contained on our website;</li>
-          <li>remove any copyright or other proprietary notations from the materials; or</li>
-          <li>transfer the materials to another person or "mirror" the materials on any other server.</li>
+          <li>Violate any law or regulation.</li>
+          <li>Infringe the rights of any third party, including without limitation, intellectual property, privacy, or contractual rights.</li>
+          <li>Upload or transmit any material that is defamatory, obscene, or otherwise objectionable.</li>
+          <li>Transmit any viruses, worms, or other malicious software.</li>
         </ul>
+        <h2>5. Intellectual Property</h2>
         <p>
-          This license shall automatically terminate if you violate any of these restrictions and may be terminated by us at any time. Upon terminating your viewing of these materials or upon the termination of this license, you must destroy any downloaded materials in your possession whether in electronic or printed format.
+          The Service and its original content, features and functionality are and will remain the exclusive property of AI Screening Agent and its licensors. The Service is protected by copyright, trademark, and other laws of both the United States and foreign countries. Our trademarks and trade dress may not be used in connection with any product or service without the prior written consent of AI Screening Agent.
         </p>
-        <h2>3. Disclaimer</h2>
+        <h2>6. Disclaimer</h2>
         <p>
-          The materials on our website are provided on an 'as is' basis. We make no warranties, expressed or implied, and hereby disclaim and negate all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.
+          The Service is provided on an "AS IS" and "AS AVAILABLE" basis. The Service is provided without warranties of any kind, whether express or implied, including, but not limited to, implied warranties of merchantability, fitness for a particular purpose, non-infringement or course of performance.
         </p>
         <p>
-          Further, we do not warrant or make any representations concerning the accuracy, likely results, or reliability of the use of the materials on our website or otherwise relating to such materials or on any sites linked to this site.
+          AI Screening Agent does not warrant that a) the Service will function uninterrupted, secure or available at any particular time or location; b) any errors or defects will be corrected; c) the Service is free of viruses or other harmful components; or d) the results of using the Service will meet your requirements.
         </p>
-        <h2>4. Limitations</h2>
+        <h2>7. Limitation of Liability</h2>
         <p>
-          In no event shall we or our suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on our website, even if we or an authorized representative has been notified orally or in writing of the possibility of such damage. Because some jurisdictions do not allow limitations on implied warranties, or limitations of liability for consequential or incidental damages, these limitations may not apply to you.
-        </p>
-        <h2>5. Accuracy of materials</h2>
-        <p>
-          The materials appearing on our website could include technical, typographical, or photographic errors. We do not warrant that any of the materials on our website are accurate, complete or current. We may make changes to the materials contained on our website at any time without notice. However we do not make any commitment to update the materials.
-        </p>
-        <h2>6. Links</h2>
-        <p>
-          We have not reviewed all of the sites linked to our website and are not responsible for the contents of any such linked site. The inclusion of any link does not imply endorsement by us of the site. Use of any such linked website is at the user's own risk.
-        </p>
-        <h2>7. Modifications</h2>
-        <p>
-          We may revise these terms of service for our website at any time without notice. By using this website you are agreeing to be bound by the then current version of these terms of service.
+          In no event shall AI Screening Agent, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from (i) your access to or use of or inability to access or use the Service; (ii) any conduct or content of any third party on the Service; (iii) any content obtained from the Service; and (iv) unauthorized access, use or alteration of your transmissions or content, whether based on warranty, contract, tort (including negligence) or any other legal theory, whether or not we have been informed of the possibility of such damage, and even if a remedy set forth herein is found to have failed of its essential purpose.
         </p>
         <h2>8. Governing Law</h2>
         <p>
-          These terms and conditions are governed by and construed in accordance with the laws of our state and you irrevocably submit to the exclusive jurisdiction of the courts in that State or location.
+          These Terms shall be governed and construed in accordance with the laws of [Your State/Country], without regard to its conflict of law provisions.
         </p>
+        <h2>9. Changes</h2>
+        <p>
+          We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material we will provide at least 30 days' notice prior to any new terms taking effect. What constitutes a material change will be determined at our sole discretion.
+        </p>
+        <h2>10. Contact Us</h2>
+        <p>
+          If you have any questions about these Terms, please contact us:
+        </p>
+        <ul>
+          <li>By email: charan.cvs@gmail.com</li>
+        </ul>
       </div>
     </div>
   );

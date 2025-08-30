@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   FileText,
   AlertTriangle,
@@ -70,6 +71,13 @@ export function ResultsDisplay({
 }: {
   results: IN8nUserResponse[] | null;
 }) {
+  const [openItems, setOpenItems] = useState([
+    "summary",
+    "experience",
+    "education",
+    "skills",
+  ]);
+
   if (!results || results.length === 0) {
     return (
       <Card className="shadow-sm">
@@ -260,11 +268,13 @@ export function ResultsDisplay({
           <CardContent className="p-8">
             <Accordion
               type="multiple"
-              defaultValue={["summary", "experience", "education", "skills"]}
+              value={openItems}
+              onValueChange={setOpenItems}
               className="w-full"
             >
-              <AccordionItem value="summary" className="border-b">
+              <AccordionItem value="summary">
                 <AccordionTrigger className="text-lg font-semibold hover:no-underline">
+                  <FileText className="h-5 w-5 mr-2" />
                   Professional Summary
                 </AccordionTrigger>
                 <AccordionContent className="pt-4">
@@ -280,7 +290,7 @@ export function ResultsDisplay({
                 </AccordionContent>
               </AccordionItem>
 
-              <AccordionItem value="experience" className="border-b">
+              <AccordionItem value="experience">
                 <AccordionTrigger className="text-lg font-semibold hover:no-underline">
                   <Briefcase className="h-5 w-5 mr-2" />
                   Work Experience
@@ -291,7 +301,7 @@ export function ResultsDisplay({
                       (exp, i) => (
                         <div
                           key={i}
-                          className="border-l-4 border-primary/20 pl-6 pb-4"
+                          className="border-l-2 border-muted pl-6 pb-4"
                         >
                           <h4 className="text-lg font-semibold text-foreground mb-2">
                             {exp["Job Title"]}
@@ -315,7 +325,7 @@ export function ResultsDisplay({
                 </AccordionContent>
               </AccordionItem>
 
-              <AccordionItem value="education" className="border-b">
+              <AccordionItem value="education">
                 <AccordionTrigger className="text-lg font-semibold hover:no-underline">
                   <GraduationCap className="h-5 w-5 mr-2" />
                   Education
@@ -382,7 +392,7 @@ export function ResultsDisplay({
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Job Overview */}
               <div className="space-y-4">
-                <h4 className="font-semibold text-foreground text-lg border-b pb-2">
+                <h4 className="font-semibold text-foreground text-lg pb-2">
                   Position Overview
                 </h4>
                 <div className="space-y-3">
@@ -424,7 +434,7 @@ export function ResultsDisplay({
               {/* Skills and Responsibilities */}
               <div className="space-y-6">
                 <div>
-                  <h4 className="font-semibold text-foreground text-lg border-b pb-2 mb-4">
+                  <h4 className="font-semibold text-foreground text-lg pb-2 mb-4">
                     Required Skills
                   </h4>
                   <div className="flex flex-wrap gap-2">
@@ -443,7 +453,7 @@ export function ResultsDisplay({
                 </div>
 
                 <div>
-                  <h4 className="font-semibold text-foreground text-lg border-b pb-2 mb-4">
+                  <h4 className="font-semibold text-foreground text-lg pb-2 mb-4">
                     Key Responsibilities
                   </h4>
                   <div className="space-y-2">

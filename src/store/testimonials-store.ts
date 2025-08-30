@@ -3,7 +3,7 @@ import type { Testimonial } from "../types";
 import useAuthStore from "./auth-store";
 import api from "../lib/api";
 
-interface TestimonialsState {
+export interface TestimonialsState {
   testimonials: Testimonial[];
   isLoading: boolean;
   error: string | null;

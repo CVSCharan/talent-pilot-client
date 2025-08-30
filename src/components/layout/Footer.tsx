@@ -11,6 +11,9 @@ export function Footer() {
           <Link to="/terms-of-service" className="text-sm text-muted-foreground hover:text-foreground">
             Terms of Service
           </Link>
+          <Link to="/contact-us" className="text-sm text-muted-foreground hover:text-foreground">
+            Contact Us
+          </Link>
         </div>
       </div>
     </footer>
