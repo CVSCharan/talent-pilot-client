@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { Header } from "./Header";
 import useAuthStore from "../../store/auth-store";
 import { Toaster } from "../ui/sonner";
+import { Footer } from "./Footer";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -39,6 +40,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         {children}
       </main>
       <Toaster position="bottom-right" />
+      <Footer />
     </div>
   );
 };

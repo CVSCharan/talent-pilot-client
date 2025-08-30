@@ -13,6 +13,8 @@ import GAuthSuccess from "./pages/GAuthSuccess";
 import TestimonialsPage from "./pages/Testimonials";
 import History from "./pages/History";
 import NotFound from "./pages/NotFound";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
 import RequireAuth from "./components/layout/RequireAuth";
 
 function App() {
@@ -34,6 +36,8 @@ function App() {
             <Route path="/auth/error" element={<GAuthError />} />
             <Route path="/testimonials" element={<TestimonialsPage />} />
             <Route path="/history" element={<History />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Toaster />

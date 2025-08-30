@@ -15,7 +15,7 @@ export function Header() {
             <img
               src="/logo.png"
               alt="TalentPilot Logo"
-              className="h-4 sm:h-6 w-auto"
+              className="h-6 w-auto"
             />
           </Link>
         </div>

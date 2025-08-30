@@ -55,10 +55,10 @@ export interface IN8nUserResponse {
         Year: string;
       }[];
       "Other Notable Information": {
-        Awards: string[];
-        Publications: string[];
+        Awards: { name: string; year: string; issuer: string; }[];
+        Publications: { title: string; year: string; journalOrVenue: string; }[];
         "Volunteer Work": string[];
-        "Open Source Contributions": string[];
+        "Open Source Contributions": { projectName: string; repository: string; }[];
         Languages: string[];
       };
       "Resume Summary": string;
