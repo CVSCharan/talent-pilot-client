@@ -17,6 +17,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import ContactUs from "./pages/ContactUs";
 import RequireAuth from "./components/layout/RequireAuth";
+import SampleResultsPage from "./pages/SampleResults";
 
 function App() {
   const queryClient = new QueryClient();
@@ -31,6 +32,7 @@ function App() {
               <Route path="/results" element={<Results />} />
               <Route path="/history" element={<History />} />
             </Route>
+            <Route path="/sample-results" element={<SampleResultsPage />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/auth/success" element={<GAuthSuccess />} />
@@ -39,8 +41,8 @@ function App() {
             <Route path="/history" element={<History />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />
-            <Route path="*" element={<NotFound />} />
             <Route path="/contact-us" element={<ContactUs />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
           <Toaster />
         </Layout>
