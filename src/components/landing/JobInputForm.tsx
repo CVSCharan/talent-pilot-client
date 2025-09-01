@@ -52,13 +52,34 @@ export function JobInputForm({
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="requiredSkills">Required Skills</Label>
+          <Label htmlFor="seniorityLevel">Seniority Level</Label>
           <Input
+            id="seniorityLevel"
+            value={formData.seniorityLevel}
+            onChange={handleInputChange}
+            placeholder="e.g., Intern, Junior, Mid, Senior"
+            required
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="requiredSkills">Required Skills</Label>
+          <Textarea
             id="requiredSkills"
             value={formData.requiredSkills}
             onChange={handleInputChange}
             placeholder="e.g., React, JavaScript, HTML, CSS"
+            rows={2}
             required
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="bonusSkills">Bonus Skills (Optional)</Label>
+          <Textarea
+            id="bonusSkills"
+            value={formData.bonusSkills}
+            onChange={handleInputChange}
+            placeholder="e.g., AWS, Docker, MongoDB"
+            rows={2}
           />
         </div>
         <div className="lg:col-span-2 space-y-2">
@@ -69,25 +90,6 @@ export function JobInputForm({
             onChange={handleInputChange}
             placeholder="Brief responsibilities for the role"
             rows={4}
-            required
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="bonusSkills">Bonus Skills (Optional)</Label>
-          <Input
-            id="bonusSkills"
-            value={formData.bonusSkills}
-            onChange={handleInputChange}
-            placeholder="e.g., AWS, Docker, MongoDB"
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="seniorityLevel">Seniority Level</Label>
-          <Input
-            id="seniorityLevel"
-            value={formData.seniorityLevel}
-            onChange={handleInputChange}
-            placeholder="e.g., Intern, Junior, Mid, Senior"
             required
           />
         </div>

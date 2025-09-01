@@ -1,10 +1,5 @@
 import { memo } from "react";
-import {
-  Card,  
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "../../ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
 import { FileText, Target, TrendingUp, User } from "lucide-react";
 import type { IN8nUserResponse } from "../../../types";
 
@@ -32,6 +27,7 @@ const AssessmentSummary = memo(({ result }: AssessmentSummaryProps) => {
             </h4>
             <p className="text-4xl font-bold text-primary">
               {result.results.final_score}
+              <span className="text-2xl text-muted-foreground">/100</span>
             </p>
           </div>
           <div className="text-center p-6 rounded-lg bg-muted/50">
@@ -39,10 +35,11 @@ const AssessmentSummary = memo(({ result }: AssessmentSummaryProps) => {
               <TrendingUp className="h-8 w-8 text-primary" />
             </div>
             <h4 className="text-sm font-medium text-muted-foreground mb-2">
-              Confidence
+              AI Confidence Score
             </h4>
             <p className="text-4xl font-bold text-primary">
               {result.results.confidence_score}
+              <span className="text-2xl text-muted-foreground">/100</span>
             </p>
           </div>
           <div className="text-center p-6 rounded-lg bg-muted/50">

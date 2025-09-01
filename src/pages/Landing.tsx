@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { JobInputForm } from "../components/landing/JobInputForm";
@@ -13,6 +12,7 @@ import type { ApiResponse } from "../types";
 import { RateLimitModal } from "../components/landing/RateLimitModal";
 import api from "../lib/api";
 import { Button } from "../components/ui/button";
+import { motion } from "framer-motion";
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -169,14 +169,36 @@ const Landing = () => {
             Streamline your hiring process with our AI-powered candidate
             screening tool. Get detailed analysis and insights in seconds.
           </p>
-          <Button
-            onClick={() => setIsTourOpen(true)}
-            variant="outline"
-            size="sm"
-            className="mt-6"
-          >
-            Take a Tour
-          </Button>
+          <div className="flex justify-center items-center gap-4">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <Button
+                onClick={() => setIsTourOpen(true)}
+                variant="outline"
+                size="sm"
+                className="mt-6"
+              >
+                How it Works
+              </Button>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <Button
+                onClick={() => navigate("/sample-results")}
+                variant="outline"
+                size="sm"
+                className="mt-6"
+              >
+                Sample Results
+              </Button>
+            </motion.div>
+          </div>
         </div>
         <Card className="max-w-4xl mx-auto shadow-lg">
           <CardContent className="p-8">
