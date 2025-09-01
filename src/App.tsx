@@ -1,7 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "./components/ui/sonner";
-
 import Layout from "./components/layout/Layout";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
@@ -18,6 +17,7 @@ import TermsOfService from "./pages/TermsOfService";
 import ContactUs from "./pages/ContactUs";
 import RequireAuth from "./components/layout/RequireAuth";
 import SampleResultsPage from "./pages/SampleResults";
+import VerifyEmail from "./pages/VerifyEmail";
 
 function App() {
   const queryClient = new QueryClient();
@@ -35,6 +35,7 @@ function App() {
             <Route path="/sample-results" element={<SampleResultsPage />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/signup" element={<SignUp />} />
+            <Route path="/verify-email" element={<VerifyEmail />} />
             <Route path="/auth/success" element={<GAuthSuccess />} />
             <Route path="/auth/error" element={<GAuthError />} />
             <Route path="/testimonials" element={<TestimonialsPage />} />

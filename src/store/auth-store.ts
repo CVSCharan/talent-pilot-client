@@ -18,7 +18,7 @@ interface AuthState {
   isLoading: boolean;
   error: string | null;
   login: (email: string, password: string) => Promise<void>;
-  signup: (email: string, password: string) => Promise<void>;
+  signup: (name: string, email: string, password: string) => Promise<void>;
   setTokenAndFetchUser: (token: string) => Promise<void>;
   logout: () => void;
   setLoading: (loading: boolean) => void;
@@ -85,7 +85,7 @@ const useAuthStore = create<AuthState>()(
         }
       },
 
-      signup: async (email, password) => {
+      signup: async (name, email, password) => {
         set({ isLoading: true, error: null });
         try {
           const response = await api.fetch(
@@ -95,7 +95,7 @@ const useAuthStore = create<AuthState>()(
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ email, password }),
+              body: JSON.stringify({ displayName: name, email, password }),
             }
           );
 
@@ -104,23 +104,15 @@ const useAuthStore = create<AuthState>()(
           if (!response.ok) {
             throw new Error(data.message || "Signup failed");
           }
-
-          set({
-            token: data.token,
-            user: data.user,
-            isAuthenticated: true,
-            isLoading: false,
-          });
-          useUserProfileStore.getState().setUserProfile(data.user);
+          // On successful signup, we don't log the user in.
+          // We just clear the loading state.
+          set({ isLoading: false });
         } catch (err) {
           set({
             error: (err as Error).message,
             isLoading: false,
-            isAuthenticated: false,
-            token: null,
-            user: null,
           });
-          throw err;
+          throw err; // re-throw error so the component can catch it
         }
       },
 

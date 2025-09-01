@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import {
   Card,
@@ -12,13 +12,26 @@ import { Label } from "../components/ui/label";
 import useAuthStore from "../store/auth-store";
 import { useState, useEffect } from "react";
 import { Container } from "../components/layout";
+import { Alert, AlertDescription } from "../components/ui/alert";
+import { Info, CheckCircle } from "lucide-react";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+  const [verificationMessage, setVerificationMessage] = useState("");
 
   const { login, isAuthenticated, isLoading, error, setError } = useAuthStore();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get("verified") === "true") {
+      setVerificationMessage(
+        "Your email has been verified! You can now log in."
+      );
+    }
+  }, [location]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -57,6 +70,18 @@ const Login = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
+              {verificationMessage && (
+                <Alert className="mb-4 border-green-500/20 bg-green-500/5 text-green-700 dark:text-green-400">
+                  <CheckCircle className="h-4 w-4 !text-green-500" />
+                  <AlertDescription>{verificationMessage}</AlertDescription>
+                </Alert>
+              )}
+              <Alert className="mb-4 border-primary/20 bg-primary/5 text-primary">
+                <Info className="h-4 w-4 !text-primary" />
+                <AlertDescription>
+                  Only registered users can log in. Please register to continue.
+                </AlertDescription>
+              </Alert>
               <form className="grid gap-4" onSubmit={handleSubmit}>
                 <div className="grid gap-2">
                   <Label htmlFor="email">Email</Label>

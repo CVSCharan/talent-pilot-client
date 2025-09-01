@@ -126,7 +126,7 @@ export type AuthState = {
 
 export type AuthActions = {
   login: (email: string, password: string) => Promise<void>;
-  signup: (email: string, password: string) => Promise<void>;
+  signup: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
   setTokenAndFetchUser: (token: string) => Promise<void>;
   setError: (error: string | null) => void;

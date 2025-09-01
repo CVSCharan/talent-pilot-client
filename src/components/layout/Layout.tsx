@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import { Header } from "./Header";
 import useAuthStore from "../../store/auth-store";
 import { Toaster } from "../ui/sonner";
@@ -10,10 +9,6 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const location = useLocation();
-  const noScrollPaths = ["/login", "/forgot-password", "/signup", "/auth/success", "/auth/error"];
-  const shouldHideScroll = noScrollPaths.includes(location.pathname);
-
   const { initializeAuth } = useAuthStore();
 
   useEffect(() => {
@@ -22,16 +17,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   useEffect(() => {
     document.body.classList.add("bg-background");
-    if (shouldHideScroll) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
     return () => {
       document.body.classList.remove("bg-background");
-      document.body.style.overflow = "unset";
     };
-  }, [shouldHideScroll]);
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen text-foreground antialiased">
