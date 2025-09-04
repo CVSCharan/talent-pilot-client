@@ -2,84 +2,204 @@ import type { FC } from "react";
 import { FaEnvelope, FaLinkedin, FaGithub, FaLink } from "react-icons/fa";
 import { Button } from "../components/ui/button";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card";
+import { Container } from "../components/layout";
 
 const ContactUs: FC = () => {
   return (
-    <div className="bg-background text-foreground">
-      <div className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="lg:col-span-2 bg-card p-8 rounded-2xl shadow-lg"
-          >
-            <h2 className="text-3xl font-bold mb-6">About Me</h2>
-            <div className="space-y-4 text-muted-foreground">
-              <p>
-                I'm CVS Charan, a passionate Full Stack Developer with expertise
-                in building modern web applications and AI-powered solutions.
-                With a strong foundation in both frontend and backend
-                technologies, I create seamless digital experiences that solve
-                real-world problems.
-              </p>
-              <p>
-                My journey in tech has been driven by curiosity and a desire to
-                continuously learn and adapt to emerging technologies,
-                particularly in the AI space.
-              </p>
-            </div>
-
-            <h3 className="text-2xl font-bold mt-10 mb-6">My Skills</h3>
-            <div className="flex flex-wrap gap-3">
-              {[
-                "React",
-                "Redux",
-                "JavaScript",
-                "TypeScript",
-                "Bootstrap",
-                "Tailwind CSS",
-                "Material-UI",
-                "Node.js",
-                "Express",
-                "Python",
-                "Django",
-                "Flask",
-                "React Native",
-                "Flutter",
-                "MongoDB",
-                "MySQL",
-                "PostgreSQL",
-                "Firebase",
-                "AWS",
-                "Azure",
-                "Docker",
-                "Kubernetes",
-                "Jenkins",
-                "Pandas",
-                "NumPy",
-                "Scikit-learn",
-                "TensorFlow",
-              ].map((skill) => (
-                <span
-                  key={skill}
-                  className="bg-primary/10 text-primary rounded-full px-4 py-2 text-sm font-medium"
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="space-y-8"
-          >
-            <div className="bg-card p-8 rounded-2xl shadow-lg">
-              <h3 className="text-2xl font-bold mb-6">Get in Touch</h3>
+    <Container className="py-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-3xl font-bold">About Me</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4 text-muted-foreground">
+                <p>
+                  I'm CVS Charan, a passionate Full Stack Developer with
+                  expertise in building modern web applications and AI-powered
+                  solutions. With a strong foundation in both frontend and
+                  backend technologies, I create seamless digital experiences
+                  that solve real-world problems.
+                </p>
+                <p>
+                  My journey in tech has been driven by curiosity and a desire
+                  to continuously learn and adapt to emerging technologies,
+                  particularly in the AI space.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="mt-8">
+            <CardHeader>
+              <CardTitle className="text-3xl font-bold">My Skills</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h3 className="text-lg font-semibold">
+                    Programming Languages
+                  </h3>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {["JavaScript", "Python", "TypeScript"].map((skill) => (
+                      <span
+                        key={skill}
+                        className="bg-primary/10 text-primary rounded-full px-3 py-1 text-sm font-medium"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold">Web Development</h3>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {[
+                      "HTML",
+                      "CSS",
+                      "React JS",
+                      "Node JS",
+                      "Next JS",
+                      "Bootstrap",
+                      "Tailwind CSS",
+                      "D3.js",
+                    ].map((skill) => (
+                      <span
+                        key={skill}
+                        className="bg-primary/10 text-primary rounded-full px-3 py-1 text-sm font-medium"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold">Mobile Development</h3>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {["React Native"].map((skill) => (
+                      <span
+                        key={skill}
+                        className="bg-primary/10 text-primary rounded-full px-3 py-1 text-sm font-medium"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold">Databases</h3>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {[
+                      "PostgreSQL",
+                      "MySQL",
+                      "Snowflake",
+                      "MongoDB",
+                      "SQLite",
+                    ].map((skill) => (
+                      <span
+                        key={skill}
+                        className="bg-primary/10 text-primary rounded-full px-3 py-1 text-sm font-medium"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold">AI & ML</h3>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {[
+                      "OpenAI API",
+                      "LangChain",
+                      "Pinecone",
+                      "Prompt Engineering",
+                      "Hugging Face (basic)",
+                      "TensorFlow (basic)",
+                      "RAG Architecture",
+                    ].map((skill) => (
+                      <span
+                        key={skill}
+                        className="bg-primary/10 text-primary rounded-full px-3 py-1 text-sm font-medium"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold">Cloud & Deployment</h3>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {[
+                      "Azure",
+                      "AWS",
+                      "GCP",
+                      "Railway",
+                      "Vercel",
+                      "Render",
+                      "Docker",
+                      "Kubernetes (basic)",
+                    ].map((skill) => (
+                      <span
+                        key={skill}
+                        className="bg-primary/10 text-primary rounded-full px-3 py-1 text-sm font-medium"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold">
+                    Tools & Technologies
+                  </h3>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {[
+                      "Power BI",
+                      "Power Automate",
+                      "Power Apps",
+                      "Databricks",
+                      "Git",
+                      "Zapier",
+                      "n8n",
+                    ].map((skill) => (
+                      <span
+                        key={skill}
+                        className="bg-primary/10 text-primary rounded-full px-3 py-1 text-sm font-medium"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold">Methodologies</h3>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {["Agile (Scrum)"].map((skill) => (
+                      <span
+                        key={skill}
+                        className="bg-primary/10 text-primary rounded-full px-3 py-1 text-sm font-medium"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+        <div className="lg:col-span-1 space-y-8 lg:sticky top-20 self-start">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-3xl font-bold">Get in Touch</CardTitle>
+            </CardHeader>
+            <CardContent>
               <div className="space-y-4">
                 <a
                   href="mailto:charan.cvs@gmail.com"
@@ -116,10 +236,15 @@ const ContactUs: FC = () => {
                   <span>Portfolio</span>
                 </a>
               </div>
-            </div>
-
-            <div className="bg-card p-8 rounded-2xl shadow-lg">
-              <h3 className="text-2xl font-bold mb-6">Leave a Testimonial</h3>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-3xl font-bold">
+                Leave a Testimonial
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
               <p className="text-muted-foreground mb-4">
                 If you enjoyed using the AI Screening Agent, I would love to
                 hear your feedback!
@@ -129,11 +254,11 @@ const ContactUs: FC = () => {
                   Leave a Testimonial
                 </Button>
               </Link>
-            </div>
-          </motion.div>
+            </CardContent>
+          </Card>
         </div>
       </div>
-    </div>
+    </Container>
   );
 };
 

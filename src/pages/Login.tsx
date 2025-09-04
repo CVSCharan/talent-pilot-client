@@ -22,7 +22,7 @@ const Login = () => {
   const location = useLocation();
   const [verificationMessage, setVerificationMessage] = useState("");
 
-  const { login, isAuthenticated, isLoading, error, setError } = useAuthStore();
+  const { login, isAuthenticated, user, isLoading, error, setError } = useAuthStore();
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -34,14 +34,14 @@ const Login = () => {
   }, [location]);
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && user) {
       navigate("/"); // Redirect to landing page after login
     }
     // Clear error when component mounts or unmounts
     return () => {
       setError(null);
     };
-  }, [isAuthenticated, navigate, setError]);
+  }, [isAuthenticated, user, navigate, setError]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

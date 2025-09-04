@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { Header } from "./Header";
 import useAuthStore from "../../store/auth-store";
 import { Toaster } from "../ui/sonner";
@@ -10,6 +11,8 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { initializeAuth } = useAuthStore();
+  const location = useLocation();
+  const isAuthPage = location.pathname === "/login" || location.pathname === "/signup" || location.pathname === "/forgot-password";
 
   useEffect(() => {
     initializeAuth();
@@ -25,7 +28,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="flex flex-col min-h-screen text-foreground antialiased">
       <Header />
-      <main className="flex-1 w-full">
+      <main className={`flex-1 w-full ${isAuthPage ? "flex flex-col justify-center" : ""}`}>
         {children}
       </main>
       <Toaster position="bottom-right" />

@@ -46,6 +46,9 @@ const useAuthStore = create<AuthState>()(
         }
         if (token) {
           await get().setTokenAndFetchUser(token);
+        } else if (isAuthenticated) {
+          // If authenticated is true but there's no token, reset the state
+          set({ token: null, user: null, isAuthenticated: false });
         }
       },
 
